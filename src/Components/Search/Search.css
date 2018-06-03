@@ -1,0 +1,23 @@
+.SearchDiv {
+    width: 1080px;
+    height: 80px;
+    border-radius: 10px;
+    box-shadow: 3px 5px 2px 0 rgba(0, 0, 0, 0.5);
+    background-color: #fafafa;
+    border: solid 2px #979797;
+    margin-top: 22px;
+}
+
+.SearchIcon {
+    width: 40px;
+    height: 40px;
+    vertical-align: center;
+    float: left;
+    padding-top: 20px;
+    padding-left: 28px;
+}
+
+.SearchQuery {
+    float : left;
+    margin-left: 20px;
+}
