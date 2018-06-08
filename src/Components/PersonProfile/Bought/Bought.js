@@ -4,13 +4,32 @@ import ViewSOPs from '../../ViewSOPs/ViewSOPs';
 
 class Bought extends Component {
     state = {
-        text: "This is Bought"
+        Users : [{
+            Type: "SOP",
+            Course: "MBA",
+            University: "Harvard"
+        },
+        {
+            Type: "SOP",
+            Course: "M.S.",
+            University: "Stanford"
+        },
+        {
+            Type: "Interview",
+            Course: "MBA",
+            University: "MIT"
+        }
+        ]
+            
     }
+    
 
     render() {
         return (
             <div className="container">
-                <ViewSOPs text={this.state.text}/>
+                <ViewSOPs 
+                Users={this.state.Users}
+                />
             </div>
         );
     }

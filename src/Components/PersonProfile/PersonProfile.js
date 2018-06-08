@@ -44,10 +44,10 @@ const PersonProfile = () => {
                 <div className="row UploadedDocDiv">
                     <div className="col-xs-0 col-md-2 col-xl-2"></div>
                     <div className="col-xs-6 col-md-4 col-xl-4 UploadedBoughtDocuments">
-                        <center><NavLink to="/profile/UploadedProfiles" exact>Uploaded Documents</NavLink></center>
+                        <center><a><NavLink to="/profile/UploadedProfiles" exact>Uploaded Documents</NavLink></a></center>
                     </div>
                     <div className="col-xs-6 col-md-4 col-xl-4 UploadedBoughtDocuments">
-                        <center><NavLink to="/profile/BoughtProfiles" exact>Bought Documents</NavLink></center>
+                        <center><a><NavLink to="/profile/BoughtProfiles" exact>Bought Documents</NavLink></a></center>
                     </div>
                     <div className="col-xs-0 col-md-2 col-xl-2 "></div>
                 </div>

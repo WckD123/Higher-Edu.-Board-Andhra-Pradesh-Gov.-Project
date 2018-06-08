@@ -3,13 +3,29 @@ import ViewSOPs from '../../ViewSOPs/ViewSOPs';
 
 class Uploaded extends Component {
     state = {
-        text: "This is Uploaded"
+        Users : [{
+            Type: "Inteviews",
+            Course: "Job",
+            University: "Google"
+        },
+        {
+            Type: "Fellowship",
+            Course: "PHD",
+            University: "Florida State"
+        },
+        {
+            Type: "Interview",
+            Course: "MBA",
+            University: "MIT"
+        }
+        ]
+            
     }
 
     render() {
         return (
             <div className="container">
-                <ViewSOPs text={this.state.text}/>
+                <ViewSOPs Users={this.state.Users}/>
             </div>
         );
     }
