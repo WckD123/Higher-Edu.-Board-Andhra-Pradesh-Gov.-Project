@@ -7,9 +7,14 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const Home = () => {
     return (
-        <div className="body-container">
+        <div class="body-container">
             <center>
-                <div className="Refer-admission-SOPs">Refer Admission SOPs, Interviews Logs from verified people.</div>
+                <div class="row">
+                    <div class="col-md-1 col-xs-0"></div>
+                    <div class="col-md-10 col-xs-12 Refer-admission-SOPs">
+                        Refer Admission SOPs, Interviews Logs from verified people.
+                    </div>
+                </div>
                 <Search />
                 <TopColleges />
                 <Cards /> 

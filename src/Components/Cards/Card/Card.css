@@ -1,0 +1,18 @@
+.Card{
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    background-color: #d8d8d8;
+    border: solid 2px #979797;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    margin-top: 10px;
+    width: 60px;
+    height: 62.3px;
+    background-color: #fafafa;
+    border: solid 2px #979797;
+}
+
+
+
