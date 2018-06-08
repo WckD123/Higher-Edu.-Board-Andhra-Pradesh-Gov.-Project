@@ -1,9 +1,4 @@
-import React from 'react';
-import './ViewSOP.css';
-
-const ViewSOPs = (props) => {
-
-    {/*const showSOPList = () => {
+    /*const showSOPList = () => {
         return(
             props.Users.map(user => 
                 <div className="col-xs-12 col-md-12">
@@ -13,15 +8,35 @@ const ViewSOPs = (props) => {
                 </div>
             )
         )
-    }; */}
+    }; */
 
-    return (
-        <div>
+
+import React, { Component } from 'react';
+import './ViewSOP.css';
+
+class ViewSOPs extends Component {
+
+    showContent = () => {
+
+        return(
+                this.props.Users.map(User => 
+                    "abcd" + console.log(User.IsClicked)
+                    //User.IsClicked ? User.Content : <div></div>
+                )
+        );
+    }
+    
+    
+    render() {
+        return (
+            <div>
             <div className="row">
                 <div className="col-xs-12 col-md-2">
                     <div className="row LeftRow">
-                        {props.Users.map(User => 
-                            <div className="col-xs-12 col-md-12">
+                        {this.props.Users.map(User => 
+                            <div className="col-xs-12 col-md-12" 
+                            onClick={this.props.onClick}
+                            >
                                 <div className="row SOPNames LeftRow">{User.Type}</div>
                                 <div className="row SOPNames">{User.Course}</div>
                                 <div className="row SOPNames">{User.University}</div>
@@ -30,9 +45,17 @@ const ViewSOPs = (props) => {
                         )}
                     </div>
                 </div>
+                <div className="col-xs-12 col-md-10">
+                    {this.props.Users.map((User) => {
+                        return(
+                            User.IsClicked ? <div>{User.Content}</div> : <div>123</div>
+                        )})
+                    }
+                </div>
             </div>
         </div>
-    );
-};
+        );
+    }
+}
 
 export default ViewSOPs;

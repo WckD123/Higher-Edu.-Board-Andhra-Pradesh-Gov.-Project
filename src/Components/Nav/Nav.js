@@ -14,7 +14,7 @@ const Nav = () => {
                     </a>
                     <ul class="navbar-nav ml-auto justify-content-end">
                         <li>
-                        <a className="Upload-SOP"><NavLink exact to="/profile">Upload SOP</NavLink></a>
+                        <a className="Upload-SOP"><NavLink exact to="/profile/UploadedProfiles">Upload SOP</NavLink></a>
                         </li>
                         <li>
                         <a className="Sign-In"><NavLink exact to={{
