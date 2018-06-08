@@ -1,7 +1,8 @@
 import React from 'react';
-import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import Aux from '../../../hoc/Aux';
 import './Card.css';
+import SellerModal from '../../SellerModal/SellerModal';
 
 const Card = () => {
     return (
@@ -27,7 +28,7 @@ const Card = () => {
                 <div className="col-md-3 col-xs-2"></div>
                 <div className="col-md-6 col-xs-8">
                     <hr></hr>
-                    <center><h4>View Profile</h4></center>
+                    <center><Link to='/profile/#UserID123'><h4>View Profile</h4></Link></center>
                 </div>
             </div>
         </div>
