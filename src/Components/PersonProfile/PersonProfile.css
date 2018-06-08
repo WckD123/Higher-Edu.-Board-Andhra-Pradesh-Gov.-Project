@@ -1,0 +1,94 @@
+.UserPic{
+    width: 128px;
+    height: 128px;
+    border-radius: 15px;
+    background-color: #d8d8d8;
+    border: solid 1px #979797;
+}
+
+.PersonProfileUserName {
+    font-family: PTSans;
+    font-size: 34px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0277bd;
+}
+
+.PersonProfileWorksAt {
+    font-family: PTSans;
+    font-size: 34px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+}  
+
+.PersonProfileButtons {
+    border-radius: 5px;
+    background-color: #d8d8d8;
+    border: solid 1px #979797;
+    font-family: PTSans;
+    font-size: 28px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0277bd;
+}
+
+.Total-Earnings-till {
+    width: 158px;
+    height: 99px;
+    font-family: PTSans;
+    font-size: 28px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0277bd;
+}
+
+.Earnings{
+    font-family: PTSans;
+    font-size: 28px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+}
+
+.PersonProfileMain {
+    border-radius: 10px;
+    background-color: #fafafa;
+    border: solid 1px #979797;
+}
+
+.UploadedBoughtDocuments {
+    font-family: PTSans;
+    font-size: 30px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+}
+
+.UploadedDocDiv{
+    margin-top: 20px;
+}
+
+.UploadedBoughtDocuments a:hover,
+.UploadedBoughtDocuments a:active,
+.UploadedBoughtDocuments a.active {
+    color: #fa923f;
+}

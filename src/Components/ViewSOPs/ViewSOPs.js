@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ViewSOPs = () => {
+const ViewSOPs = (props) => {
     return (
         <div>
-            <h3>View SOPs Here!!</h3>
+            <h3>{props.text}</h3>
         </div>
     );
 };
