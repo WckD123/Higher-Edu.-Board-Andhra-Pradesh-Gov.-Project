@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ViewSOPs from '../ViewSOPs/ViewSOPs';
 import './PersonProfile.css';
 import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import Bought from './Bought/Bought';
 import Uploaded from './Uploaded/Uploaded';
+import { connect } from 'react-redux';
+import AddSOP from '../../Components/AddSOPModal/AddSOP';
 
-const PersonProfile = () => {
+
+class PersonProfile extends Component {
+
+    state = {
+        showAddSOPModal : false
+    }
+
+    hideAddSOPHandler = () => {
+        this.setState( { showAddSOPModal : false } );
+    }
+
+    showAddSOPHandler = () => {
+        this.setState( { showAddSOPModal : true } );
+    }
+
+
+    render(){
     return (
         <div>
+            {this.state.showAddSOPModal ? <AddSOP 
+                    show={this.state.showAddSOPModal} 
+                    showModal={this.showAddSOPHandler}
+                    hideModal={this.hideAddSOPHandler}
+            /> : null}
             <div className="PersonProfileMain">
                 <div className="row UploadedDocDiv">
                     <div className="col-xs-12 col-md-2">
@@ -15,13 +38,13 @@ const PersonProfile = () => {
                     </div>
                     <div className="col-xs-12 col-md-8">
                         <div className="row PersonProfileUserName">
-                            Name
+                            {this.props.firstName} {this.props.lastName}
                         </div>
                         <div className="row PersonProfileWorksAt">
-                            Currently works at Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla...
+                            Currently works as {this.props.Experience}
                         </div>
                         <div className="row">
-                            <p>LinkedIn Profile</p>
+                            <a href={this.props.LinkedInLink}><i class="fab fa-linkedin fa-2x"> LinkedIn</i></a>
                         </div>
                         
                     </div>
@@ -30,15 +53,32 @@ const PersonProfile = () => {
                             <div className="Total-Earnings-till">Total Earnings (till date)</div>
                         </div>
                         <div className="row">
-                            <div className="Earnings">$0.0</div>
+                            <div className="Earnings">{this.props.TotalEarnings}</div>
                         </div>
                     </div>
                 </div>
                 <div className="container UploadedDocDiv">
                     <div className="row">
-                        <div className="col-xs-4 col-md-4 col-xl-4 PersonProfileButtons">Add Admission SOP</div>
-                        <div className="col-xs-4 col-md-4 col-xl-4 PersonProfileButtons">Add Fellowship SOP</div>
-                        <div className="col-xs-4 col-md-4 col-xl-4 PersonProfileButtons">Add Interview Log</div>
+                        <div className="col-xs-4 col-md-4 col-xl-4">
+                        <div className="row">
+                            <div className="col-xs-1 col-md-1 col-xl-1" />
+                            <div onClick={this.showAddSOPHandler} className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Admission SOP</div>
+                        </div>
+                        
+                        
+                        </div>
+                        <div className="col-xs-4 col-md-4 col-xl-4">
+                        <div className="row">
+                            <div className="col-xs-1 col-md-1 col-xl-1" />
+                            <div className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Fellowship SOP</div>
+                        </div>
+                        </div>
+                        <div className="col-xs-4 col-md-4 col-xl-4">
+                        <div className="row">
+                            <div className="col-xs-1 col-md-1 col-xl-1" />
+                            <div className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Interview Log</div>
+                        </div>
+                        </div>
                     </div>
                 </div>
                 <div className="row UploadedDocDiv">
@@ -64,7 +104,25 @@ const PersonProfile = () => {
                 </div>
             </center>
         </div>
-    );
+    );}
 };
 
-export default PersonProfile;
+const mapStateToProps = state => {
+    return {
+        firstName : state.FirstName,
+        lastName : state.LastName,
+        Experience : state.Experience,
+        TotalEarnings : state.TotalEarnings,
+        BoughtDocs : state.BoughtDocs,
+        UploadedDocs : state.UploadedDocs,
+        LinkedInLink : state.LinkedInLink
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+export default connect(mapStateToProps)(PersonProfile);

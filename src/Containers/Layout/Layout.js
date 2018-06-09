@@ -7,6 +7,8 @@ import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import Profile from '../../Components/PersonProfile/PersonProfile';
 import Home from '../Home/Home';
 import LoginModal from '../../Components/LoginModal/LoginModal';
+import { Connect } from 'react-redux';
+import AddSOP from '../../Components/AddSOPModal/AddSOP';
 
 
 
@@ -15,15 +17,24 @@ class Layout extends Component {
 //Defining the State here
 
     state = {
-        show : false
+        showLoginModal : false,
+        showAddSOPModal : false
     }
 
     hideModalHandler = () => {
-        this.setState( { show : false } );
+        this.setState( { showLoginModal : false } );
     }
 
     showModalHandler = () => {
-        this.setState( { show : true } );
+        this.setState( { showLoginModal : true } );
+    }
+
+    hideAddSOPHandler = () => {
+        this.setState( { showLoginModal : false } );
+    }
+
+    showAddSOPHandler = () => {
+        this.setState( { showLoginModal : true } );
     }
 
     
@@ -34,8 +45,8 @@ class Layout extends Component {
                 <Nav
                     showModal={this.showModalHandler}
                 />
-                {this.state.show ? <LoginModal 
-                    show={this.state.show} 
+                {this.state.showLoginModal ? <LoginModal 
+                    show={this.state.showLoginModal} 
                     showModal={this.showModalHandler}
                     hideModal={this.hideModalHandler}
                 /> : null}

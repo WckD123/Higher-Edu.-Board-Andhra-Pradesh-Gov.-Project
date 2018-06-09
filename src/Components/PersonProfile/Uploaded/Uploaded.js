@@ -1,35 +1,10 @@
 import React, { Component } from 'react';
 import ViewSOPs from '../../ViewSOPs/ViewSOPs';
+import { connect } from 'react-redux';
+
 
 class Uploaded extends Component {
-    state = {
-        Users : [{
-            Type: "Inteviews",
-            Course: "Job",
-            IsClicked : true,
-            University: "Google",
-            Content : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
 
-        },
-        {
-            Type: "Fellowship",
-            Course: "PHD",
-            IsClicked : false,
-            University: "Florida State",
-            Content : "2222222 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-
-        },
-        {
-            Type: "Interview",
-            Course: "MBA",
-            IsClicked : false,
-            University: "MIT",
-            Content : "33333333 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-
-        }
-        ]
-            
-    }
 
             /* **** ChageClickedHandler function to change the Content shown 
             based  on the SOP name clicked on the left hand menu   ****  */
@@ -55,7 +30,7 @@ class Uploaded extends Component {
         return (
             <div className="container">
                 <ViewSOPs 
-                Users={this.state.Users}
+                Users={this.props.UploadedDocs}
                 onClick = {this.changeClickedHandler} />
 
             </div>
@@ -63,4 +38,10 @@ class Uploaded extends Component {
     }
 }
 
-export default Uploaded;
+const mapStateToProps = state => {
+    return {
+        UploadedDocs : state.UploadedDocs
+    };
+}
+
+export default connect(mapStateToProps)(Uploaded);
