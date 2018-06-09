@@ -14,12 +14,31 @@ class Layout extends Component {
 
 //Defining the State here
 
+    state = {
+        show : false
+    }
+
+    hideModalHandler = () => {
+        this.setState( { show : false } );
+    }
+
+    showModalHandler = () => {
+        this.setState( { show : true } );
+    }
+
     
     render() {
         return(
             <Aux>
                 {/*Navigation is always fixed in the layout*/}
-                <LoginModal />
+                <Nav
+                    showModal={this.showModalHandler}
+                />
+                {this.state.show ? <LoginModal 
+                    show={this.state.show} 
+                    showModal={this.showModalHandler}
+                    hideModal={this.hideModalHandler}
+                /> : null}
                 <Switch>
                     <Route path="/" component={Home} exact />
                     <Route path="/profile" component={Profile} />   

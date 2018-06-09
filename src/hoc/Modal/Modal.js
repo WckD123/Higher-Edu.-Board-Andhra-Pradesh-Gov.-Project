@@ -16,7 +16,7 @@ class Modal extends Component {
     render () {
         return (
             <Aux>
-                <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+                <Backdrop show={this.props.show} clicked={this.props.hideModal} />
                 <div
                     className="Modal"
                     style={{
@@ -25,7 +25,7 @@ class Modal extends Component {
                     }}>
                 <div className="row">
                     <div className="col-xs-11 col-md-11" />
-                    <div className="col-xs-1 col-md-1" onClick={this.props.modalClosed}>X</div>
+                    <div className="col-xs-1 col-md-1" onClick={this.props.hideModal}>X</div>
                 </div>
                     {this.props.children}
                 </div>

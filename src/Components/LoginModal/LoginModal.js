@@ -5,25 +5,11 @@ import Nav from '../Nav/Nav';
 
 class LoginModal extends Component{
 
-    state = {
-        show : false
-    }
-
-    hideModalHandler = () => {
-        this.setState( { show : false } );
-    }
-
-    showModalHandler = () => {
-        this.setState( { show : true } );
-    }
 
     render(){
         return (
                <div>
-                   <Nav 
-                        show={this.state.show} showModal={this.showModalHandler}
-                   />
-                   <Modal show={this.state.show} modalClosed={this.hideModalHandler} > 
+                   <Modal show={this.props.show} hideModal={this.props.hideModal} > 
                        <div className = "container">
                            <div className = "row">
                                  <h3>Why Upload on Gettin</h3>                                 
