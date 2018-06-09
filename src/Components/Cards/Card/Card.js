@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
-import Aux from '../../../hoc/Aux';
+import Auxil from '../../../hoc/Auxil/Auxil';
 import './Card.css';
 import SellerModal from '../../SellerModal/SellerModal';
 
 const Card = () => {
     return (
-        <Aux>
+        <Auxil>
         <div className="Card">
             <div className="row">
                 <div className="col-xs-4 col-md-4">
@@ -32,7 +32,7 @@ const Card = () => {
                 </div>
             </div>
         </div>
-        </Aux>
+        </Auxil>
     );
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import Nav from '../../Components/Nav/Nav';
-import Aux from '../../hoc/Aux';
+import Auxil from '../../hoc/Auxil/Auxil';
 import Footer from '../../Components/Footer/Footer';
 import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import Profile from '../../Components/PersonProfile/PersonProfile';
@@ -40,7 +40,7 @@ class Layout extends Component {
     
     render() {
         return(
-            <Aux>
+            <Auxil>
                 {/*Navigation is always fixed in the layout*/}
                 <Nav
                     showModal={this.showModalHandler}
@@ -57,7 +57,7 @@ class Layout extends Component {
                 {/*<Route path="/login" component={LoginModal} exact />
                 Footer is always fixed in the layout*/}
                 <Footer />
-            </Aux>
+            </Auxil>
         ); 
     }
 }
