@@ -4,9 +4,10 @@ import './Nav.css';
 import Logo from './Logo.jpg';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-const Nav = () => {
+const Nav = (props) => {
     return (
         <div>
+            {console.log(props)}
             <header className="NavHeader">
                 <nav class="navbar navbar-light bg-light justify-content-between sticky-top">
                     <a className="navbar-brand"><NavLink to="/" exact>
@@ -16,14 +17,13 @@ const Nav = () => {
                         <li>
                         <a className="Upload-SOP"><NavLink exact to="/profile/UploadedProfiles">Upload SOP</NavLink></a>
                         </li>
-                        <li>
-                        <a className="Sign-In"><NavLink exact to={{
-                            pathname: '/login'
-                            }}>Login</NavLink></a>
+                        <li className="Sign-In" onClick={props.showModal}>
+                        Login
                         </li>
                     </ul>
                 </nav>
             </header>
+            
 
 
 

@@ -30,8 +30,11 @@ class Uploaded extends Component {
         ]
             
     }
-    
 
+            /* **** ChageClickedHandler function to change the Content shown 
+            based  on the SOP name clicked on the left hand menu   ****  */
+
+    
     changeClickedHandler = (props) => {
         console.log(this.props);
         console.log(this.state);
@@ -53,8 +56,8 @@ class Uploaded extends Component {
             <div className="container">
                 <ViewSOPs 
                 Users={this.state.Users}
-                onClick = {this.changeClickedHandler}/>
-                
+                onClick = {this.changeClickedHandler} />
+
             </div>
         );
     }

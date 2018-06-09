@@ -6,6 +6,7 @@ import './Footer.css';
 const footer = () => {
     return (
         <div className = {["container","footerContainer"].join(' ')}>
+            <hr />
             <div className ="row">
                 <div className = {['col-md-4','col-xs-12'].join(' ')}>
                     <div className="row">

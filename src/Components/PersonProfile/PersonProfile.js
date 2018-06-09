@@ -54,6 +54,9 @@ const PersonProfile = () => {
             </div>
             <center>
                 <div className="row">
+                
+                    {/* **** Switch Part of the screen based on routes  ****  */}
+
                     <Switch>
                         <Route path="/profile/BoughtProfiles" component={Bought} exact></Route>
                         <Route path="/profile/UploadedProfiles"  component={Uploaded} exact></Route>

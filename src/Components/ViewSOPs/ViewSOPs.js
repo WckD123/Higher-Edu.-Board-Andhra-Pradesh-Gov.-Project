@@ -16,6 +16,14 @@ import './ViewSOP.css';
 
 class ViewSOPs extends Component {
 
+    componentDidMount = () => {
+        return(
+            this.props.Users.map(User => 
+                User.IsClicked ? User.Content : <div></div>
+            )
+        );
+    }
+
     showContent = () => {
 
         return(
@@ -46,11 +54,7 @@ class ViewSOPs extends Component {
                     </div>
                 </div>
                 <div className="col-xs-12 col-md-10">
-                    {this.props.Users.map((User) => {
-                        return(
-                            User.IsClicked ? <div>{User.Content}</div> : <div>123</div>
-                        )})
-                    }
+                    {this.componentDidMount}
                 </div>
             </div>
         </div>

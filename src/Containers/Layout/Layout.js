@@ -9,30 +9,23 @@ import Home from '../Home/Home';
 import LoginModal from '../../Components/LoginModal/LoginModal';
 
 
+
 class Layout extends Component {
 
 //Defining the State here
 
-    state = {
-        User : {
-            ID : 123,
-            Name : 'Mehul',
-            Email : 'email@email.com',
-            College : 'BITS'
-        }
-    }
-
+    
     render() {
         return(
             <Aux>
                 {/*Navigation is always fixed in the layout*/}
-                <Nav />
+                <LoginModal />
                 <Switch>
-                    <Route path="/" component={Home} exact/>
-                    <Route path="/profile" component={Profile} />
-                    <Route path="/login" component={LoginModal} exact />
+                    <Route path="/" component={Home} exact />
+                    <Route path="/profile" component={Profile} />   
                 </Switch>
-                {/*Navigation is always fixed in the layout*/}
+                {/*<Route path="/login" component={LoginModal} exact />
+                Footer is always fixed in the layout*/}
                 <Footer />
             </Aux>
         ); 
