@@ -68,6 +68,20 @@ const initialState =  {
     TokenExpiry : "ExpiredDate"
 }
 
+/*const setInitialState= () =>
+{
+    axios.get( 'https://gettin-4d3a5.firebaseio.com/Users.json' )
+            .then( response => {
+                const Users = response.data;
+                const updatedUsers = {
+                        ...Users
+                    }
+                this.setState({initialState: updatedUsers});
+                console.log(this.state.initialState);
+            } );
+}
+*/
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         

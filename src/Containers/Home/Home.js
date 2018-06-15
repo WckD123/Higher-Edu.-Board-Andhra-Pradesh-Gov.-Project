@@ -7,6 +7,17 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import SellerModal from '../../Components/SellerModal/SellerModal';
 
 class Home extends Component {
+    state = {
+        showSellerModal : false
+    }
+
+    hideModalHandler = () => {
+        this.setState( { showSellerModal : false } );
+    }
+
+    showModalHandler = () => {
+        this.setState( { showSellerModal : true } );
+    }
 
     state = {
         showSellerModal : false
