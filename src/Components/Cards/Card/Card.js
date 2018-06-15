@@ -4,7 +4,7 @@ import Auxil from '../../../hoc/Auxil/Auxil';
 import './Card.css';
 import SellerModal from '../../SellerModal/SellerModal';
 
-const Card = () => {
+const Card = (props) => {
     return (
         <Auxil>
         <div className="Card">
@@ -28,7 +28,7 @@ const Card = () => {
                 <div className="col-md-3 col-xs-2"></div>
                 <div className="col-md-6 col-xs-8">
                     <hr></hr>
-                    <center><Link to='/profile/#UserID123'><h4>View Profile</h4></Link></center>
+                    <center><h4 onClick={props.showModal}>View Profile</h4></center>
                 </div>
             </div>
         </div>

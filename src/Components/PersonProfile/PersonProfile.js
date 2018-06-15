@@ -26,11 +26,6 @@ class PersonProfile extends Component {
     render(){
     return (
         <div>
-            {this.state.showAddSOPModal ? <AddSOP 
-                    show={this.state.showAddSOPModal} 
-                    showModal={this.showAddSOPHandler}
-                    hideModal={this.hideAddSOPHandler}
-            /> : null}
             <div className="PersonProfileMain">
                 <div className="row UploadedDocDiv">
                     <div className="col-xs-12 col-md-2">
@@ -92,6 +87,11 @@ class PersonProfile extends Component {
                     <div className="col-xs-0 col-md-2 col-xl-2 "></div>
                 </div>
             </div>
+            {this.state.showAddSOPModal ? <AddSOP 
+                    show={this.state.showAddSOPModal} 
+                    showModal={this.showAddSOPHandler}
+                    hideModal={this.hideAddSOPHandler}
+            /> : null}
             <center>
                 <div className="row">
                 
@@ -109,13 +109,13 @@ class PersonProfile extends Component {
 
 const mapStateToProps = state => {
     return {
-        firstName : state.FirstName,
-        lastName : state.LastName,
-        Experience : state.Experience,
-        TotalEarnings : state.TotalEarnings,
-        BoughtDocs : state.BoughtDocs,
-        UploadedDocs : state.UploadedDocs,
-        LinkedInLink : state.LinkedInLink
+        firstName : state.personProfile.FirstName,
+        lastName : state.personProfile.LastName,
+        Experience : state.personProfile.Experience,
+        TotalEarnings : state.personProfile.TotalEarnings,
+        BoughtDocs : state.personProfile.BoughtDocs,
+        UploadedDocs : state.personProfile.UploadedDocs,
+        LinkedInLink : state.personProfile.LinkedInLink
     };
 }
 

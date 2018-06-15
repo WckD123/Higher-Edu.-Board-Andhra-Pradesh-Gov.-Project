@@ -40,7 +40,7 @@ class Uploaded extends Component {
 
 const mapStateToProps = state => {
     return {
-        UploadedDocs : state.UploadedDocs
+        UploadedDocs : state.personProfile.UploadedDocs
     };
 }
 
