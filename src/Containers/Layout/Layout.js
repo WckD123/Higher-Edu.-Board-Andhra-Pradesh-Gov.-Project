@@ -17,8 +17,7 @@ class Layout extends Component {
 //Defining the State here
 
     state = {
-        showLoginModal : false,
-        showAddSOPModal : false
+        showLoginModal : false
     }
 
     hideModalHandler = () => {
@@ -26,14 +25,6 @@ class Layout extends Component {
     }
 
     showModalHandler = () => {
-        this.setState( { showLoginModal : true } );
-    }
-
-    hideAddSOPHandler = () => {
-        this.setState( { showLoginModal : false } );
-    }
-
-    showAddSOPHandler = () => {
         this.setState( { showLoginModal : true } );
     }
 
@@ -45,6 +36,9 @@ class Layout extends Component {
                 <Nav
                     showModal={this.showModalHandler}
                 />
+
+                {/*when showlogin modal is true then show modal*/}
+
                 {this.state.showLoginModal ? <LoginModal 
                     show={this.state.showLoginModal} 
                     showModal={this.showModalHandler}
@@ -52,7 +46,7 @@ class Layout extends Component {
                 /> : null}
                 <Switch>
                     <Route path="/" component={Home} exact />
-                    <Route path="/profile" component={Profile} />   
+                    <Route path="/profile" component={Profile} /> 
                 </Switch>
                 {/*<Route path="/login" component={LoginModal} exact />
                 Footer is always fixed in the layout*/}

@@ -4,14 +4,31 @@ import TopColleges from '../../Components/TopColleges/TopColleges';
 import Cards from '../../Components/Cards/Cards';
 import './Home.css';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import SellerModal from '../../Components/SellerModal/SellerModal';
 
 class Home extends Component {
+    state = {
+        showSellerModal : false
+    }
+
+    hideModalHandler = () => {
+        this.setState( { showSellerModal : false } );
+    }
+
+    showModalHandler = () => {
+        this.setState( { showSellerModal : true } );
+    }
 
     
 
     render(){
         return (
             <div class="body-container">
+                {this.state.showSellerModal ? <SellerModal 
+                    show={this.state.showSellerModal} 
+                    showModal={this.showModalHandler}
+                    hideModal={this.hideModalHandler}
+                /> : null}
                 <center>
                     <div class="row">
                         <div class="col-md-1 col-xs-0"></div>
@@ -25,7 +42,7 @@ class Home extends Component {
     
                     <Search />
                     <TopColleges />
-                    <Cards />
+                    <Cards showModal={this.showModalHandler} />
                 </center>   
             </div>
         );
