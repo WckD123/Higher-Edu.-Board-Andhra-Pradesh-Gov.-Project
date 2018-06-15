@@ -6,13 +6,48 @@ import Bought from './Bought/Bought';
 import Uploaded from './Uploaded/Uploaded';
 import { connect } from 'react-redux';
 import AddSOP from '../../Components/AddSOPModal/AddSOP';
+import axios from 'axios';
+
 
 
 class PersonProfile extends Component {
 
+    
     state = {
-        showAddSOPModal : false
+        showAddSOPModal : false,
+        Users:{
+            Id : "",
+            FirstName : "",
+            LastName : "",
+            Email : "",
+            Education : "",
+            Experience : "",
+            LinkedInLink : "",
+            BoughtDocs : [],
+            UploadedDocs : [],
+            TotalEarnings : "$0.0",
+            AuthToken : "RandomAuthToken", 
+            TokenExpiry : "ExpiredDate"
+
+        }
     }
+
+
+    componentDidMount () {
+        axios.get( 'https://gettin-4d3a5.firebaseio.com/Users.json' )
+            .then( response => {
+
+
+                const Users = response.data;
+                const updatedUsers = {
+                        ...Users
+                    }
+                this.setState({Users: updatedUsers});
+                console.log(this.state);
+            } );
+            
+    }
+
 
     hideAddSOPHandler = () => {
         this.setState( { showAddSOPModal : false } );
@@ -38,13 +73,13 @@ class PersonProfile extends Component {
                     </div>
                     <div className="col-xs-12 col-md-8">
                         <div className="row PersonProfileUserName">
-                            {this.props.firstName} {this.props.lastName}
+                            {this.state.Users.FirstName} {this.state.Users.LastName}
                         </div>
                         <div className="row PersonProfileWorksAt">
-                            Currently works as {this.props.Experience}
+                            Currently works as {this.state.Users.Experience}
                         </div>
                         <div className="row">
-                            <a href={this.props.LinkedInLink}><i class="fab fa-linkedin fa-2x"> LinkedIn</i></a>
+                            <a href={this.state.Users.LinkedInLink}><i class="fab fa-linkedin fa-2x"> LinkedIn</i></a>
                         </div>
                         
                     </div>
@@ -53,7 +88,7 @@ class PersonProfile extends Component {
                             <div className="Total-Earnings-till">Total Earnings (till date)</div>
                         </div>
                         <div className="row">
-                            <div className="Earnings">{this.props.TotalEarnings}</div>
+                            <div className="Earnings">{this.state.Users.TotalEarning}</div>
                         </div>
                     </div>
                 </div>
@@ -109,13 +144,13 @@ class PersonProfile extends Component {
 
 const mapStateToProps = state => {
     return {
-        firstName : state.FirstName,
-        lastName : state.LastName,
-        Experience : state.Experience,
-        TotalEarnings : state.TotalEarnings,
-        BoughtDocs : state.BoughtDocs,
-        UploadedDocs : state.UploadedDocs,
-        LinkedInLink : state.LinkedInLink
+        //firstName : state.FirstName,
+        //lastName : state.LastName,
+        //Experience : state.Experience,
+        //TotalEarnings : state.TotalEarnings,
+        //BoughtDocs : state.BoughtDocs,
+        //UploadedDocs : state.UploadedDocs,
+        //LinkedInLink : state.LinkedInLink
     };
 }
 
