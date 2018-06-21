@@ -18,7 +18,7 @@ const Nav = (props) => {
                         <a className="Upload-SOP"><NavLink exact to="/profile/UploadedProfiles">Upload SOP</NavLink></a>
                         </li>
                         <li className="Sign-In" onClick={props.showModal}>
-                        Login
+                        <a>Login</a>
                         </li>
                     </ul>
                 </nav>

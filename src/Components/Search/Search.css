@@ -1,5 +1,5 @@
 .SearchDiv {
-    width: 1080px;
+    width: 80%;
     height: 80px;
     border-radius: 10px;
     box-shadow: 3px 5px 2px 0 rgba(0, 0, 0, 0.5);
@@ -20,4 +20,18 @@
 .SearchQuery {
     float : left;
     margin-left: 20px;
+}
+
+#searchInput {
+    vertical-align: -webkit-baseline-middle;
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    width: 80%;
+    margin-top: 20px;
+}
+
+/* When the input field gets focus, change its width to 100% */
+#searchInput:focus {
+    box-shadow: 2px;
 }

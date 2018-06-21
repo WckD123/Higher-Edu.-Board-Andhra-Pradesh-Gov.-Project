@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Modal.css';
 import Auxil from '../Auxil/Auxil';
 import Backdrop from '../Backdrop/Backdrop';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 class Modal extends Component {
 
@@ -18,15 +20,11 @@ class Modal extends Component {
             <Auxil>
                 <Backdrop show={this.props.show} clicked={this.props.hideModal} />
                 <div
-                    className="Modal"
+                    className="Modal Container"
                     style={{
                         transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
                         opacity: this.props.show ? '1' : '0'
                     }}>
-                {/*<div className="row">
-                    <div className="col-xs-11 col-md-11" />
-                    <div className="col-xs-1 col-md-1" onClick={this.props.hideModal}>X</div>
-                </div>*/}
                     {this.props.children}
                 </div>
             </Auxil>

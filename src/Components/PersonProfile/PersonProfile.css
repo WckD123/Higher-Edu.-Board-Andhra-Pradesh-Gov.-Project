@@ -94,3 +94,8 @@
 .UploadedBoughtDocuments a.active {
     color: #fa923f;
 }
+
+.PersonProfileButtons:hover{
+    color: #fa923f;
+    cursor: pointer;
+}

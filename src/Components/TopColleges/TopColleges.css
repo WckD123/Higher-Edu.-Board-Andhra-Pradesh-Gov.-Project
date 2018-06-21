@@ -4,3 +4,9 @@
     background-color: #fafafa;
     border: solid 1px #979797;
 }
+
+
+@keyframes marquee {
+    0%   { transform: translate(0, 0); animation-timing-function: ease-in;}
+    100% { transform: translate(-100%, 0); animation-timing-function: ease-out;}
+}

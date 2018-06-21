@@ -39,11 +39,11 @@ class Layout extends Component {
 
                 {/*when showlogin modal is true then show modal*/}
 
-                {this.state.showLoginModal ? <LoginModal 
+                <LoginModal 
                     show={this.state.showLoginModal} 
                     showModal={this.showModalHandler}
                     hideModal={this.hideModalHandler}
-                /> : null}
+                />
                 <Switch>
                     <Route path="/" component={Home} exact />
                     <Route path="/profile" component={Profile} /> 

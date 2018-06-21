@@ -36,9 +36,6 @@ const TopCollege = () => {
                     </center>
                 </div>
             </div>
-            <div className="col-xs-2 col-md-2 col-xl-2">
-                <div className="Line" />
-            </div>
         </div>
     );
 };

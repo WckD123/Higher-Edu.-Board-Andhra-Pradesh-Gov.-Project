@@ -20,7 +20,7 @@ class Bought extends Component {
 
 const mapStateToProps = state => {
     return {
-        BoughtDocs : state.personProfile.BoughtDocs
+        BoughtDocs : state.BoughtDocs
     };
 }
 

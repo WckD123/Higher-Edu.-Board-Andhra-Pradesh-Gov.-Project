@@ -28,7 +28,7 @@ const Card = (props) => {
                 <div className="col-md-3 col-xs-2"></div>
                 <div className="col-md-6 col-xs-8">
                     <hr></hr>
-                    <center><h4 onClick={props.showModal}>View Profile</h4></center>
+                    <a href="#"><center><h4 onClick={props.showModal}>View Profile</h4></center></a>
                 </div>
             </div>
         </div>

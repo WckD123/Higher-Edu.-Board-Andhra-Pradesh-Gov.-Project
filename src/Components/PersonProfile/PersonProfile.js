@@ -7,14 +7,16 @@ import Uploaded from './Uploaded/Uploaded';
 import { connect } from 'react-redux';
 import AddSOP from '../../Components/AddSOPModal/AddSOP';
 import axios from 'axios';
-
-
+import AddFellowship from '../AddSOPModal/AddFellowshipModal';
+import AddInterview from '../AddSOPModal/AddInterviewModal';
 
 class PersonProfile extends Component {
 
     
     state = {
         showAddSOPModal : false,
+        showFellowshipModal : false,
+        showInterviewModal : false,
         Users:{
             Id : "",
             FirstName : "",
@@ -29,7 +31,8 @@ class PersonProfile extends Component {
             AuthToken : "RandomAuthToken", 
             TokenExpiry : "ExpiredDate"
 
-        }
+        },
+        
     }
 
 
@@ -57,10 +60,41 @@ class PersonProfile extends Component {
         this.setState( { showAddSOPModal : true } );
     }
 
+    hideFellowshipHandler = () => {
+        this.setState( { showFellowshipModal : false } );
+    }
+
+    showFellowshipHandler = () => {
+        this.setState( { showFellowshipModal : true } );
+    }
+
+    hideInterviewHandler = () => {
+        this.setState( { showInterviewModal : false } );
+    }
+
+    showInterviewHandler = () => {
+        this.setState( { showInterviewModal : true } );
+    }
+
 
     render(){
     return (
         <div>
+            <AddSOP 
+                    show={this.state.showAddSOPModal} 
+                    showModal={this.showAddSOPHandler}
+                    hideModal={this.hideAddSOPHandler}
+            />
+            <AddFellowship 
+                    show={this.state.showFellowshipModal} 
+                    showModal={this.showFellowshipHandler}
+                    hideModal={this.hideFellowshipHandler}
+            />
+            <AddInterview 
+                    show={this.state.showInterviewModal} 
+                    showModal={this.showInterviewHandler}
+                    hideModal={this.hideInterviewHandler}
+            />
             <div className="PersonProfileMain">
                 <div className="row UploadedDocDiv">
                     <div className="col-xs-12 col-md-2">
@@ -100,13 +134,13 @@ class PersonProfile extends Component {
                         <div className="col-xs-4 col-md-4 col-xl-4">
                         <div className="row">
                             <div className="col-xs-1 col-md-1 col-xl-1" />
-                            <div className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Fellowship SOP</div>
+                            <div onClick={this.showFellowshipHandler}  className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Fellowship SOP</div>
                         </div>
                         </div>
                         <div className="col-xs-4 col-md-4 col-xl-4">
                         <div className="row">
                             <div className="col-xs-1 col-md-1 col-xl-1" />
-                            <div className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Interview Log</div>
+                            <div  onClick={this.showInterviewHandler} className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Interview Log</div>
                         </div>
                         </div>
                     </div>
@@ -122,11 +156,6 @@ class PersonProfile extends Component {
                     <div className="col-xs-0 col-md-2 col-xl-2 "></div>
                 </div>
             </div>
-            {this.state.showAddSOPModal ? <AddSOP 
-                    show={this.state.showAddSOPModal} 
-                    showModal={this.showAddSOPHandler}
-                    hideModal={this.hideAddSOPHandler}
-            /> : null}
             <center>
                 <div className="row">
                 

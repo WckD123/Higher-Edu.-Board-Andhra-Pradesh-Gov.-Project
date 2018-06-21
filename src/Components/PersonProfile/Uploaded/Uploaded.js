@@ -8,22 +8,24 @@ class Uploaded extends Component {
 
             /* **** ChageClickedHandler function to change the Content shown 
             based  on the SOP name clicked on the left hand menu   ****  */
-
     
+
     changeClickedHandler = (props) => {
-        console.log(this.props);
-        console.log(this.state);
-        let updatedUsers = [];
-        updatedUsers = {...this.state};
+        console.log(this.props.UploadedDocs);
+        let updatedUsers = {...this.props.UploadedDocs};
         console.log({updatedUsers});
-        updatedUsers.Users.map(User => 
-            User.IsClicked = false
+        let updatedDocs = Object.keys(updatedUsers).map(function(key) {
+            return updatedUsers[key];
+          });
+        console.log(updatedDocs)
+        updatedDocs.map(UpdatedDoc => 
+            UpdatedDoc.IsClicked = false
         );
-        updatedUsers.Users.map(User => 
-            User.Course == this.props.Course ? /*User.setState({IsClicked : true})*/ console.log(User) : null );
-        console.log({updatedUsers});
-        this.setState(...updatedUsers);
-        console.log(this.state);
+        updatedDocs.map(UpdatedDoc => 
+           UpdatedDoc.Course == this.props.Course ? this.props.IsClicked = true : null );
+        console.log(updatedDocs);
+        //this.setState(...updatedDocs);
+        //console.log(this.state); */
     };
 
     render() {
@@ -31,8 +33,7 @@ class Uploaded extends Component {
             <div className="container">
                 <ViewSOPs 
                 Users={this.props.UploadedDocs}
-                onClick = {this.changeClickedHandler} />
-
+                onClick = {this.changeClickedHandler}/>
             </div>
         );
     }
@@ -40,7 +41,7 @@ class Uploaded extends Component {
 
 const mapStateToProps = state => {
     return {
-        UploadedDocs : state.personProfile.UploadedDocs
+        UploadedDocs : state.UploadedDocs
     };
 }
 

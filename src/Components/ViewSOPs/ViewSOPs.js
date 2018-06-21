@@ -13,23 +13,22 @@
 
 import React, { Component } from 'react';
 import './ViewSOP.css';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 class ViewSOPs extends Component {
 
-    componentDidMount = () => {
-        return(
-            this.props.Users.map(User => 
-                User.IsClicked ? User.Content : <div></div>
-            )
-        );
+    shouldComponentUpdate(){
+        return true;
     }
+
 
     showContent = () => {
 
         return(
                 this.props.Users.map(User => 
-                    "abcd" + console.log(User.IsClicked)
-                    //User.IsClicked ? User.Content : <div></div>
+                    //"abcd" + console.log(User.IsClicked)
+                    User.IsClicked ? User.Content : <div></div>
                 )
         );
     }
@@ -54,7 +53,10 @@ class ViewSOPs extends Component {
                     </div>
                 </div>
                 <div className="col-xs-12 col-md-10">
-                    {this.componentDidMount}
+                    {this.props.Users.map(User => 
+                        //"abcd" + console.log(User.IsClicked)
+                        User.IsClicked ? User.Content : <div></div>
+                    )}
                 </div>
             </div>
         </div>

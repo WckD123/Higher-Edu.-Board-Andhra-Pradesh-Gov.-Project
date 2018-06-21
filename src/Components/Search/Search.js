@@ -10,7 +10,7 @@ const Search = () => {
                     <i className="fas fa-search fa-2x"></i>
                 </div> 
                 <div>
-                    <h2 className="SearchQuery">Try Harvard SOP</h2>
+                    <input type="text" id="searchInput" name="search" placeholder="Try Harvard SOP..." />
                 </div> 
             </div>
         </Auxil>

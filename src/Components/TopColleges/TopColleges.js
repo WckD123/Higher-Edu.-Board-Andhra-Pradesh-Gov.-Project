@@ -1,15 +1,18 @@
 import React from 'react';
 import TopCollege from './TopCollege/TopCollege';
-import './TopColleges.css'
+import './TopColleges.css';
+import MarqueeDouble from 'react-marquee-double';
+import { Col } from 'react-bootstrap';
+
 
 const TopColleges = () => {
     return (
         <div className="container-fluid TopCollegesOuterDiv">
             <div className="row">
-                <div className="col-xs-3 col-md-3 col-xl-3"><TopCollege /></div>
-                <div className="col-xs-3 col-md-3 col-xl-3"><TopCollege /></div>
-                <div className="col-xs-3 col-md-3 col-xl-3"><TopCollege /></div>
-                <div className="col-xs-3 col-md-3 col-xl-3"><TopCollege /></div>
+                    <Col xs={3} md={3}><TopCollege /></Col>
+                    <Col xs={3} md={3}><TopCollege /></Col>
+                    <Col xs={3} md={3}><TopCollege /></Col>
+                    <Col xs={3} md={3}><TopCollege /></Col>
             </div>
         </div>  
     );
