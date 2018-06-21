@@ -1,7 +1,6 @@
 import React from 'react';
 import TopCollege from './TopCollege/TopCollege';
 import './TopColleges.css';
-import MarqueeDouble from 'react-marquee-double';
 import { Col } from 'react-bootstrap';
 
 

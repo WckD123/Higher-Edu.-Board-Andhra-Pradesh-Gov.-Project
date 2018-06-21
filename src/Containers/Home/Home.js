@@ -7,6 +7,7 @@ import {Modal, Button } from 'react-bootstrap';
 import SellerModal from '../../Components/SellerModal/SellerModal';
 
 class Home extends Component {
+    
     state = {
         showSellerModal : false
     }

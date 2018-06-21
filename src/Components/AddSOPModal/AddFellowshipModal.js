@@ -24,7 +24,7 @@ class AddSOP extends Component {
                 <h5>Fellowship question </h5>
                 </Col>
                 <Col md={7} xs={12}>
-                    <input type = "text" name = "name" placeholder= "SOP Question" /> 
+                    <input type = "text" name = "name" placeholder= "Fellowship Question" /> 
                 </Col> 
             </Row>
         </Col>
@@ -44,32 +44,31 @@ class AddSOP extends Component {
     </Row>, null];
 
     QA = <Row>
-                    <Col xs={12} lg={12} className="Top-margin">
-                        <Row>
-                            <Col md={2} xs={0}>
-                            </Col>  
-                            <Col md={3} xs={12}>
-                            <h5>Fellowship question </h5>
-                            </Col>
-                            <Col md={7} xs={12}>
-                                <input type = "text" name = "name" placeholder= "SOP Question" /> 
-                            </Col> 
-                        </Row>
+            <Col xs={12} lg={12} className="Top-margin">
+                <Row>
+                    <Col md={2} xs={0}>
+                    </Col>  
+                    <Col md={3} xs={12}>
+                    <h5>Fellowship question </h5>
                     </Col>
-                    <Col xs={12} lg={12} className="Top-margin">
-                        <Row>
-                            <Col md={2} xs={0}>
-                                
-                            </Col>  
-                            <Col md={3} xs={12}>
-                            <h5>Answer </h5>
-                            </Col>
-                            <Col md={7} xs={12}>
-                            <textarea class="form-control" rows="5" id="Answer"></textarea> 
-                            </Col> 
-                        </Row>
-                    </Col>
+                    <Col md={7} xs={12}>
+                        <input type = "text" name = "name" placeholder= "Fellowship Question" /> 
+                    </Col> 
                 </Row>
+            </Col>
+            <Col xs={12} lg={12} className="Top-margin">
+                <Row>
+                    <Col md={2} xs={0}>   
+                    </Col>  
+                    <Col md={3} xs={12}>
+                    <h5>Answer </h5>
+                    </Col>
+                    <Col md={7} xs={12}>
+                    <textarea class="form-control" rows="5" id="Answer"></textarea> 
+                    </Col> 
+                </Row>
+            </Col>
+        </Row>
 
     addNewDiv = () => {
         this.QuesAns.push(this.QA);

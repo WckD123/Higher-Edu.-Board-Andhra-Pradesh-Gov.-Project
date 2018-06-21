@@ -24,7 +24,7 @@ class AddSOP extends Component {
                 <h5>Interview question </h5>
                 </Col>
                 <Col md={7} xs={12}>
-                    <input type = "text" name = "name" placeholder= "SOP Question" /> 
+                    <input type = "text" name = "name" placeholder= "Interview Question" /> 
                 </Col> 
             </Row>
         </Col>
@@ -52,7 +52,7 @@ class AddSOP extends Component {
                             <h5>Interview question </h5>
                             </Col>
                             <Col md={7} xs={12}>
-                                <input type = "text" name = "name" placeholder= "SOP Question" /> 
+                                <input type = "text" name = "name" placeholder= "Interview Question" /> 
                             </Col> 
                         </Row>
                     </Col>
