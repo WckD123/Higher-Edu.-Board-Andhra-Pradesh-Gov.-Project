@@ -14,13 +14,13 @@ const Card = (props) => {
                 </div>
                 <div className="col-xs-8 col-md-8">
                     <div className="row">
-                        <h4>Name</h4>
+                        <h4>{props.firstName} {props.lastName}</h4>
                     </div>
                     <div className="row">
-                        <h5>Works At</h5>
+                        <h8>{props.experience}</h8>
                     </div>
                     <div className="row">
-                        <h5>LinkedIn profile Link</h5>
+                        <h5><a href={props.linkedIn}>LinkedIn profile Link</a></h5>
                     </div>                                        
                 </div>
             </div>
