@@ -33,7 +33,9 @@ class SellerModal extends Component{
     axios.patch('https://gettin-4d3a5.firebaseio.com/Users/'+ parseInt(this.props.id-1) +'.json',{TotalEarnings : tempPrice}).then(response =>
             console.log(response)
         );
-    {this.props.getFunc}
+    
+    {this.props.getFunc};
+    this.props.hideModal()
     }
  
     render(){
