@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Modal , Popover, Tooltip, Button, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
 import './AddSOP.css';
 
+//ADD SOP, Fellowship and Interview have almost identical code
+
 
 class AddSOP extends Component {
 
@@ -13,6 +15,8 @@ class AddSOP extends Component {
         PriceBand : null,
         QuesAnswers: []
     }
+
+    //An array of Question Answers. To be displayed. Have added 1 div as default
 
     QuesAns = [<Row>
                     <Col xs={12} lg={12} className="Top-margin">
@@ -42,6 +46,8 @@ class AddSOP extends Component {
                     </Col>
                 </Row>];
 
+    //Contains 1 div that is appended in the QuesAns array to display more than 1 QA
+
     QA = <Row>
             <Col xs={12} lg={12} className="Top-margin">
                 <Row>
@@ -70,9 +76,13 @@ class AddSOP extends Component {
             </Col>
         </Row>
 
+
+    //Function to add new QA in the QuesAns Array
+
     addNewDiv = () => {
         this.QuesAns.push(this.QA);
-        console.log(this.QuesAns);
+        //console.log(this.QuesAns);
+        //Set State is called to re-render the element :: NOTE : Find another way if possible ::
         this.setState(this.state);
     }
     

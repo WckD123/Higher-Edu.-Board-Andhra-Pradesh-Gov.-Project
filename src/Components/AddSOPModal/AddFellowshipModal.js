@@ -3,6 +3,7 @@ import {Modal , Popover, Tooltip, Button, OverlayTrigger,Grid,Row,Col } from 're
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './AddSOP.css';
 
+//For Explaination of code, refer AddSOP.js
 
 class AddSOP extends Component {
 

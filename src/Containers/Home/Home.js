@@ -8,28 +8,13 @@ import SellerModal from '../../Components/SellerModal/SellerModal';
 
 class Home extends Component {
     
-    state = {
-        showSellerModal : false
-    }
-
-    hideModalHandler = () => {
-        this.setState( { showSellerModal : false } );
-    }
-
-    showModalHandler = () => {
-        this.setState( { showSellerModal : true } );
-    }
+    
 
     
 
     render(){
         return (
             <div class="body-container">
-                <SellerModal 
-                    show={this.state.showSellerModal} 
-                    showModal={this.showModalHandler}
-                    hideModal={this.hideModalHandler}
-                />
                 <center>
                     <div class="row">
                         <div class="col-md-1 col-xs-0"></div>
