@@ -11,12 +11,13 @@ class Bought extends Component {
             <div className="container">
                 {console.log(this.props)}
                 <ViewSOPs 
-                Users={this.props.BoughtDocs}
+                uploadedDocuments={this.props.BoughtDocs}
                 />
             </div>
         );
     }
 }
+
 
 const mapStateToProps = state => {
     return {

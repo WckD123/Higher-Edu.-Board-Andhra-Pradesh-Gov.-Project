@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal , Popover, Tooltip, Button, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
+import {Modal ,Grid,Row,Col } from 'react-bootstrap';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './AddSOP.css';
 

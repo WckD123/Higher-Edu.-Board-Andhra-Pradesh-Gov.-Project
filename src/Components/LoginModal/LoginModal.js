@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import {Modal , Popover, Tooltip, Button, OverlayTrigger} from 'react-bootstrap';
+import {Modal } from 'react-bootstrap';
 import './LoginModal.css';
 import linkedIn from '../../assets/images/linkedinButton.png';
 
@@ -28,9 +28,6 @@ class LoginModal extends Component{
                 <Modal.Body>
                 <div className="container">
                            <div className="row">
-                           <center>
-                                <h3></h3>     
-                           </center>
                                                              
                            </div>
                            <div className="row">
@@ -62,7 +59,7 @@ class LoginModal extends Component{
                             <div className = "row">
                                 <div className="col-md-2 col-xl-2" />
                                 <div className="col-md-8 col-xl-8" >
-                                    <a href="#"><img src={linkedIn} height="60%" width="80%" className="img-rounded img-responsive"/></a>
+                                    <a href="#"><img alt="linkedIn" src={linkedIn} onClick={this.props.auth.login} height="60%" width="80%" className="img-rounded img-responsive"/></a>
                                 </div>                               
                             </div>
                         </div>

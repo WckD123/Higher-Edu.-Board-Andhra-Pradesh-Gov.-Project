@@ -9,15 +9,16 @@ class Uploaded extends Component {
             /* **** ChageClickedHandler function to change the Content shown 
             based  on the SOP name clicked on the left hand menu   ****  */
     
+            
 
-    changeClickedHandler = (props) => {
-        console.log(this.props.UploadedDocs);
+   /* changeClickedHandler = (props) => {
+        //console.log(this.props.UploadedDocs);
         let updatedUsers = {...this.props.UploadedDocs};
-        console.log({updatedUsers});
+        //console.log({updatedUsers});
         let updatedDocs = Object.keys(updatedUsers).map(function(key) {
             return updatedUsers[key];
           });
-        console.log(updatedDocs)
+        //console.log(updatedDocs)
         updatedDocs.map(UpdatedDoc => 
             UpdatedDoc.IsClicked = false
         );
@@ -25,14 +26,28 @@ class Uploaded extends Component {
            UpdatedDoc.Course == this.props.Course ? this.props.IsClicked = true : null );
         console.log(updatedDocs);
         //this.setState(...updatedDocs);
-        //console.log(this.state); */
+        //console.log(this.state); 
     };
+
+    */
+
+
+
+
+    changeClickedHandler = () => {
+        
+    }
+
+
+
+
+
 
     render() {
         return (
             <div className="container">
                 <ViewSOPs 
-                Users={this.props.UploadedDocs}
+                uploadedDocuments={this.props.UploadedDocs}
                 onClick = {this.changeClickedHandler}/>
             </div>
         );

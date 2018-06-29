@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Nav.css';
 import Logo from './Logo.jpg';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -14,12 +14,18 @@ const Nav = (props) => {
                         <img src={Logo} alt="GettInn" height="38" width="114"></img></NavLink>
                     </a>
                     <ul class="navbar-nav ml-auto justify-content-end">
-                        <li>
-                        <a className="Upload-SOP"><NavLink exact to="/profile/UploadedProfiles">Upload SOP</NavLink></a>
-                        </li>
-                        <li className="Sign-In" onClick={props.showModal}>
-                        <a>Login</a>
-                        </li>
+                        {props.auth.isAuthenticated() ? 
+                            <span>
+                            <li>
+                            <a className="Upload-SOP"><NavLink exact to="/profile/UploadedProfiles">Upload SOP</NavLink></a>
+                            </li>
+                            <li className="Sign-In" onClick={props.auth.logout}>
+                            <a>Logout</a>
+                            </li> </span>:
+                            <li className="Sign-In" onClick={props.showModal}>
+                            <a>Login</a>
+                            </li>
+                    } 
                     </ul>
                 </nav>
             </header>

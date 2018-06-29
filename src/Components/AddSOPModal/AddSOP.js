@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Modal , Popover, Tooltip, Button, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
+import {Modal , Grid,Row,Col } from 'react-bootstrap';
 import './AddSOP.css';
+import Axios from 'axios';
 
 //ADD SOP, Fellowship and Interview have almost identical code
 
@@ -8,43 +9,112 @@ import './AddSOP.css';
 class AddSOP extends Component {
 
     state = {
-        University: null,
-        Country: null,
-        Department: null,
-        Degree: null,
-        PriceBand : null,
-        QuesAnswers: []
+        Docs : {
+            University: null,
+            Country: null,
+            Department: null,
+            Degree: null,
+            PriceBand : null,
+            QuesAnswers: this.QuesAns,
+            IsClicked:false,
+            type:"SOP"
+        },
+        QID : 1,
+        UploadedDocs: null
+    }
+
+    componentDidMount(){
+        Axios.get('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json').then(response =>
+        {
+            this.setState({UploadedDocs:response.data})
+        }
+    )
+    }
+
+    onChangedHandler = (event, argument) => {
+        const tempVar = {...this.state.Docs.QuesAnswers}
+
+        console.log("On changed handler");
+    }
+
+    onUniChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.University = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onDepChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.Department = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onDegChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.Degree = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onPriceChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.PriceBand = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onCountryChangedHandler = (event) => {
+        console.log(event.target.value);
+        const tempVar = {...this.state.Docs}
+        tempVar.Country = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onQAChangeHandler = (event) => {
+        console.log("QA me change hua hai BC!!")
+    }
+
+    submit = (event) => {
+        let uploadedArray = []
+        uploadedArray.push(this.state.UploadedDocs);
+        console.log(uploadedArray);
+        uploadedArray.push(this.state.Docs);
+        console.log(uploadedArray);
+        Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
     }
 
     //An array of Question Answers. To be displayed. Have added 1 div as default
 
     QuesAns = [<Row>
-                    <Col xs={12} lg={12} className="Top-margin">
-                        <Row>
-                            <Col md={2} xs={0}>
-                            </Col>  
-                            <Col md={3} xs={12}>
-                            <h5>SOP question </h5>
-                            </Col>
-                            <Col md={7} xs={12}>
-                                <input type = "text" name = "name" placeholder= "SOP Question" /> 
-                            </Col> 
-                        </Row>
-                    </Col>
-                    <Col xs={12} lg={12} className="Top-margin">
-                        <Row>
-                            <Col md={2} xs={0}>
-                                
-                            </Col>  
-                            <Col md={3} xs={12}>
-                            <h5>Answer </h5>
-                            </Col>
-                            <Col md={7} xs={12}>
-                            <textarea class="form-control" rows="5" id="Answer"></textarea> 
-                            </Col> 
-                        </Row>
-                    </Col>
-                </Row>];
+                        <Col xs={12} lg={12} className="Top-margin">
+                            <Row>
+                                <Col md={2} xs={0}>
+                                </Col>  
+                                <Col md={3} xs={12}>
+                                <h5>SOP question </h5>
+                                </Col>
+                                <Col md={7} xs={12}>
+                                    <input type = "text" name = "SOPQ" id="SOPQ" placeholder= "SOP Question" onChange={this.onChangedHandler} /> 
+                                </Col> 
+                            </Row>
+                        </Col>
+                        <Col xs={12} lg={12} className="Top-margin">
+                            <Row>
+                                <Col md={2} xs={0}>
+                                    
+                                </Col>  
+                                <Col md={3} xs={12}>
+                                <h5>Answer </h5>
+                                </Col>
+                                <Col md={7} xs={12}>
+                                <textarea class="form-control" name="Ans" rows="5" id="Answer" onChange={this.onChangedHandler}></textarea> 
+                                </Col> 
+                            </Row>
+                        </Col>
+                    </Row>];
 
     //Contains 1 div that is appended in the QuesAns array to display more than 1 QA
 
@@ -57,7 +127,7 @@ class AddSOP extends Component {
                     <h5>SOP question </h5>
                     </Col>
                     <Col md={7} xs={12}>
-                        <input type = "text" name = "name" placeholder= "SOP Question" /> 
+                        <input type = "text" name = "SOPQ" id="SOPQ" placeholder= "SOP Question"  onChange={this.onChangedHandler}/> 
                     </Col> 
                 </Row>
             </Col>
@@ -70,7 +140,7 @@ class AddSOP extends Component {
                     <h5>Answer </h5>
                     </Col>
                     <Col md={7} xs={12}>
-                    <textarea class="form-control" rows="5" id="Answer"></textarea> 
+                    <textarea class="form-control" name="ans" rows="5" id="Answer" onChange={this.onChangedHandler}></textarea> 
                     </Col> 
                 </Row>
             </Col>
@@ -80,6 +150,10 @@ class AddSOP extends Component {
     //Function to add new QA in the QuesAns Array
 
     addNewDiv = () => {
+        const qid = this.state.QID;
+        console.log(this.QA);
+        //let inputEl = this.QA.Document.getElementById("SOPQ")
+        //inputEl.id = "SOPQ1";
         this.QuesAns.push(this.QA);
         //console.log(this.QuesAns);
         //Set State is called to re-render the element :: NOTE : Find another way if possible ::
@@ -112,7 +186,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "University..." />
+                                            <input type = "text" name = "University" value={this.state.Docs.University} onChange={this.onUniChangedHandler} placeholder= "University..." />
                                         </center>
                                     </Col>
     
@@ -127,7 +201,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                        <select name="countries">
+                                        <select value={this.state.Docs.Country} onChange={this.onCountryChangedHandler} name="countries">
                                             <option value="United States">United States</option> 
                                             <option value="United Kingdom">United Kingdom</option> 
                                             <option value="Afghanistan">Afghanistan</option> 
@@ -384,7 +458,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "Department..." />
+                                            <input type = "text" name = "Department" value={this.state.Docs.Department} onChange={this.onDepChangedHandler} placeholder= "Department..." />
                                         </center>
                                     </Col>
     
@@ -399,7 +473,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "Degree..." />
+                                            <input type = "text" value={this.state.Docs.Degree} onChange={this.onDegChangedHandler} name = "Degree" placeholder= "Degree..." />
                                         </center>
                                     </Col>
     
@@ -414,7 +488,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                        <select>
+                                        <select name="price" value={this.state.Docs.PriceBand} onChange={this.onPriceChangedHandler} >
                                             <option>$1.5</option>
                                             <option>$2</option>
                                             <option>$3</option>
@@ -427,7 +501,7 @@ class AddSOP extends Component {
                             </Col>
                         </Row>
                         <hr />
-                        {this.QuesAns.map(Q => Q)}
+                        <span onChange={this.onQAChangeHandler}>{this.QuesAns.map(Q => Q)}</span>
                         <hr />
                         <Row>
                             <Col xs={12} lg={12} className="Top-margin">
@@ -441,7 +515,7 @@ class AddSOP extends Component {
                         <Row>
                             <Col md={2} xs={0}>
                             </Col>
-                            <Col md={2} xs={12} className="btn btn-success" onClick={this.props.hideModal}>
+                            <Col md={2} xs={12} className="btn btn-success" onClick={this.submit}>
                             Submit
                             </Col>
                             <Col md={2} xs={0}>

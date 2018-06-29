@@ -3,8 +3,8 @@ import Search from '../../Components/Search/Search';
 import TopColleges from '../../Components/TopColleges/TopColleges';
 import Cards from '../../Components/Cards/Cards';
 import './Home.css';
-import {Modal, Button } from 'react-bootstrap';
-import SellerModal from '../../Components/SellerModal/SellerModal';
+//import {Modal, Button } from 'react-bootstrap';
+//import SellerModal from '../../Components/SellerModal/SellerModal';
 
 class Home extends Component {
     

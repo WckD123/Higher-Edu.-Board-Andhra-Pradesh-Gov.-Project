@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ViewSOPs from '../ViewSOPs/ViewSOPs';
+//import ViewSOPs from '../ViewSOPs/ViewSOPs';
 import './PersonProfile.css';
-import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import { Route, NavLink, Switch } from 'react-router-dom';
 import Bought from './Bought/Bought';
 import Uploaded from './Uploaded/Uploaded';
 import { connect } from 'react-redux';
@@ -117,7 +117,7 @@ class PersonProfile extends Component {
                             <div className="Total-Earnings-till">Total Earnings (till date)</div>
                         </div>
                         <div className="row">
-                            <div className="Earnings">{this.state.Users.TotalEarning}</div>
+                            <div className="Earnings">{this.state.Users.TotalEarnings}</div>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ class PersonProfile extends Component {
                         <center><a><NavLink to="/profile/UploadedProfiles" exact>Uploaded Documents</NavLink></a></center>
                     </div>
                     <div className="col-xs-6 col-md-4 col-xl-4 UploadedBoughtDocuments">
-                        <center><a><NavLink to="/profile/BoughtProfiles" exact>Bought Documents</NavLink></a></center>
+                        <center><a><NavLink to="/profile/BoughtProfiles" exact>Purchased Documents</NavLink></a></center>
                     </div>
                     <div className="col-xs-0 col-md-2 col-xl-2 "></div>
                 </div>
@@ -183,10 +183,10 @@ const mapStateToProps = state => {
     };
 }
 
-const mapDispatchToProps = dispatch => {
+/*const mapDispatchToProps = dispatch => {
     return {
         
     }
-}
+}*/
 
 export default connect(mapStateToProps)(PersonProfile);

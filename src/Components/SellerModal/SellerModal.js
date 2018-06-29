@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Modal , Popover, Tooltip, Button, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
+import {Modal , Popover, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
@@ -17,14 +17,15 @@ class SellerModal extends Component{
         let tempPrice = parseFloat(this.state.Earnings);
         console.log(tempPrice);
         for (var i=0, len=tops.length; i<len; i++) {
-            if ( tops[i].type === 'checkbox' && tops[i].checked== true) {
+            if ( tops[i].type === 'checkbox' && tops[i].checked === true) {
                 console.log(tops[i].value);
                 tempPrice += parseFloat(tops[i].value);
                 console.log(tempPrice);
             }
         }
-        const tempconst = {...this.state, Earnings : tempPrice};
-        this.setState({tempconst});
+    const tempState = {...this.state};
+    tempState.Earnings = tempPrice
+    this.setState(tempState);
         
     //let address =  ;
 
@@ -34,7 +35,7 @@ class SellerModal extends Component{
             console.log(response)
         );
     
-    {this.props.getFunc};
+    this.props.getFunc();
     this.props.hideModal()
     }
  

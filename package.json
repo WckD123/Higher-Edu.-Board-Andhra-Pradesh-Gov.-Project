@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "auth0-js": "^9.4.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
+    "history": "^4.7.2",
     "html5-marquee": "^0.2.0",
     "marquee-react-dwyer": "^6.0.0",
     "react": "^16.4.1",

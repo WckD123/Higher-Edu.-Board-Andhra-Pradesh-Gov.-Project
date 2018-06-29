@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+//import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import Auxil from '../../../hoc/Auxil/Auxil';
 import './Card.css';
 import SellerModal from '../../SellerModal/SellerModal';

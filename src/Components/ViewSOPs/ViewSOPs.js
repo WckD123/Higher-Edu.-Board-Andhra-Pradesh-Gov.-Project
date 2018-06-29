@@ -11,6 +11,7 @@
     }; */
 
 
+
 import React, { Component } from 'react';
 import './ViewSOP.css';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -26,9 +27,9 @@ class ViewSOPs extends Component {
     showContent = () => {
 
         return(
-                this.props.Users.map(User => 
+                this.props.uploadedDocuments.map(uploadedDocument => 
                     //"abcd" + console.log(User.IsClicked)
-                    User.IsClicked ? User.Content : <div></div>
+                    uploadedDocument.IsClicked ? uploadedDocument.Content : <div></div>
                 )
         );
     }
@@ -40,22 +41,22 @@ class ViewSOPs extends Component {
             <div className="row">
                 <div className="col-xs-12 col-md-2">
                     <div className="row LeftRow">
-                        {this.props.Users.map(User => 
+                        {this.props.uploadedDocuments.map(uploadedDocument => 
                             <div className="col-xs-12 col-md-12" 
                             onClick={this.props.onClick}
                             >
-                                <div className="row SOPNames LeftRow">{User.Type}</div>
-                                <div className="row SOPNames">{User.Course}</div>
-                                <div className="row SOPNames">{User.University}</div>
+                                <div className="row SOPNames LeftRow">{uploadedDocument.Type}</div>
+                                <div className="row SOPNames">{uploadedDocument.Course}</div>
+                                <div className="row SOPNames">{uploadedDocument.University}</div>
                                 <hr></hr>
                             </div>
                         )}
                     </div>
                 </div>
                 <div className="col-xs-12 col-md-10">
-                    {this.props.Users.map(User => 
+                    {this.props.uploadedDocuments.map(uploadedDocument => 
                         //"abcd" + console.log(User.IsClicked)
-                        User.IsClicked ? User.Content : <div></div>
+                        uploadedDocument.IsClicked ? uploadedDocument.Content : <div></div>
                     )}
                 </div>
             </div>
