@@ -5,7 +5,7 @@ class Auth{
     auth0 = new WebAuth({
         domain: 'react-secure.auth0.com',
         clientID: '5NgsctEOriTm20mPYe0f65JI5fr7kHjx',
-        redirectUri: 'http://localhost:3000/callback',
+        redirectUri: 'https://gettinn.com/callback',
         responseType: 'token'
         
     });
