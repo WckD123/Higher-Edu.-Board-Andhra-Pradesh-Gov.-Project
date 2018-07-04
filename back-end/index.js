@@ -6,13 +6,6 @@ const app = express();
 
 app.use(cors({origin: 'http://localhost:3001'}));
 
-
-const SELECT_ALL_USERS = 'SELECT * FROM Users';
-
-const CREATE_NEW_USER = 'INSERT INTO ';
-
-const UPLOAD_DOCUMENT = `INSERT INTO docTable WHERE $()`;
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user : 'root',
