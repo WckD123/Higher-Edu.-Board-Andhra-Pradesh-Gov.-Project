@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Modal , Popover, OverlayTrigger,Grid,Row,Col } from 'react-bootstrap';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import logo from '../../assets/images/Logo.png';
 
 class SellerModal extends Component{
 
@@ -10,32 +11,59 @@ class SellerModal extends Component{
     }
 
     pay = () =>{
-        let el = document.getElementById('toppings');
-
-        let tops = el.getElementsByTagName('input');
-        console.log(this.state.Earnings);
-        let tempPrice = parseFloat(this.state.Earnings);
-        console.log(tempPrice);
-        for (var i=0, len=tops.length; i<len; i++) {
-            if ( tops[i].type === 'checkbox' && tops[i].checked === true) {
-                console.log(tops[i].value);
-                tempPrice += parseFloat(tops[i].value);
-                console.log(tempPrice);
+        /* Payment code. 
+           We simply have to open the dialog of razorpay and let it handle the payment.
+           To setup the dialog we have to provide calculate amount, logged in user details (name,email).
+         */
+        var options = {
+            "key": "rzp_test_vkKNjys1UbVmKE",
+            "amount": "2000", // 2000 paise = INR 20
+            "name": "Gettinn.com",
+            "description": "",
+            "image": logo,
+            "handler": function (response){
+                // Called on payment success. Record this transaction in "transactions table"
+                // Buyer_id, doc_ids of all the documents bought, razorpay_payment_id, datetime
+                // After db update - Show a success alert with text ("Congratulations! You can refer your purchased SOPs on profile page under Purchased Documents section") to user &
+                // redirect to profile page. 
+                alert(response.razorpay_payment_id)
+            },
+            "prefill": {
+                "name": "Neeraj Kumar",
+                "email": "kn.neeraj.89@gmail.com"
+            },
+            "theme": {
+                "color": "#F37254"
             }
-        }
-    const tempState = {...this.state};
-    tempState.Earnings = tempPrice
-    this.setState(tempState);
+        };
+        var rzp1 = new window.Razorpay(options);
+        rzp1.open();
+       // let el = document.getElementById('toppings');
+
+       // let tops = el.getElementsByTagName('input');
+       // console.log(this.state.Earnings);
+        //let tempPrice = parseFloat(this.state.Earnings);
+        //console.log(tempPrice);
+        // for (var i=0, len=tops.length; i<len; i++) {
+        //     if ( tops[i].type === 'checkbox' && tops[i].checked === true) {
+        //         console.log(tops[i].value);
+        //         tempPrice += parseFloat(tops[i].value);
+        //         console.log(tempPrice);
+        //     }
+        // }
+    // const tempState = {...this.state};
+    // tempState.Earnings = tempPrice
+    // this.setState(tempState);
         
     //let address =  ;
 
-    console.log(this.state.Earnings);
+    // console.log(this.state.Earnings);
 
-    axios.patch('https://gettin-4d3a5.firebaseio.com/Users/'+ parseInt(this.props.id-1) +'.json',{TotalEarnings : tempPrice}).then(response =>
-            console.log(response)
-        );
+    // axios.patch('https://gettin-4d3a5.firebaseio.com/Users/'+ parseInt(this.props.id-1) +'.json',{TotalEarnings : tempPrice}).then(response =>
+    //         console.log(response)
+    //     );
     
-    this.props.getFunc();
+    // this.props.getFunc();
     this.props.hideModal()
     }
  
