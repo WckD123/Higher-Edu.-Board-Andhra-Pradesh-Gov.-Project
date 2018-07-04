@@ -12,14 +12,15 @@ class Cards extends Component {
     //Get Users Array from DB
 
     componentDidMount(){
-        axios.get('https://gettin-4d3a5.firebaseio.com/Users.json').then(
+        axios.get('http://localhost:4000/users/getAllData').then(
             response => {
                 this.setState({Users : response.data});
+                console.log(this.state);
             }
         );
     }
 
-    getFunc = axios.get('https://gettin-4d3a5.firebaseio.com/Users.json').then(response => {
+    getFunc = axios.get('http://localhost:4000/users/getAllData').then(response => {
             this.setState({Users : response.data})})
 
 
@@ -44,14 +45,13 @@ class Cards extends Component {
                     {/*console.log(User.BoughtDocs)*/}
                     <Card
                     getFunc = {this.getFunc}
-                    earnings = {User.TotalEarnings}
-                    id = {User.Id}
+                    earnings = {User.total_earnings}
+                    id = {User.id}
                     uploadedDocs = {User.UploadedDocs}
                     showModal = {User.ShowModal}
-                    linkedIn = {User.LinkedInLink}
-                    experience = {User.Experience}
-                    firstName={User.FirstName} 
-                    lastName={User.LastName} 
+                    linkedIn = {User.linkedin_profile_link}
+                    experience = {User.linkedin_experience}
+                    firstName={User.name}
                     /></div>
             )}).splice(0,this.num)
             

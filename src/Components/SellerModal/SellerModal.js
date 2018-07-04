@@ -104,7 +104,7 @@ class SellerModal extends Component{
                                 </Row>
                             </Col>
                             
-                        {this.props.uploadedDocs.map(uploadedDoc => (
+                        {/*this.props.uploadedDocs.map(uploadedDoc => (
                                 <Col xs={12} lg={12}>
                                     <Row>
                                         <Col md={4} xs={10}>
@@ -128,7 +128,7 @@ class SellerModal extends Component{
                                         
                                     </Row>
                                 </Col>
-                        ))}
+                        ))*/}
     
                             
     
