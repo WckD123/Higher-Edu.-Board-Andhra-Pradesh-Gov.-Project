@@ -9,14 +9,16 @@ import Home from '../Home/Home';
 import LoginModal from '../../Components/LoginModal/LoginModal';
 // import { Connect } from 'react-redux';
 // import AddSOP from '../../Components/AddSOPModal/AddSOP';
-
+import Auth from 'auth0-js';
+import Axios from 'axios';
 
 class Layout extends Component {
 
 //Defining the State here
 
     state = {
-        showLoginModal : false
+        showLoginModal : false,
+        LoggedInUser : null
     }
 
     hideModalHandler = () => {
@@ -25,6 +27,13 @@ class Layout extends Component {
 
     showModalHandler = () => {
         this.setState( { showLoginModal : true } );
+    }
+
+    componentDidMount(){
+        //console.log("Test1234" + Auth);
+        Axios.get('https://react-secure.auth0.com/userinfo').then(response =>{
+            console.log(response);
+        });
     }
 
     

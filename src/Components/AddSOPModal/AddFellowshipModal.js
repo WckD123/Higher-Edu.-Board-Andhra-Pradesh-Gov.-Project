@@ -2,19 +2,91 @@ import React, {Component} from 'react';
 import {Modal ,Grid,Row,Col } from 'react-bootstrap';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './AddSOP.css';
+import Axios from 'axios';
 
 //For Explaination of code, refer AddSOP.js
 
 class AddSOP extends Component {
 
     state = {
-        University: null,
-        Country: null,
-        Department: null,
-        Degree: null,
-        PriceBand : null,
-        QuesAnswers: []
+        Docs : {
+            University: null,
+            Country: "United States",
+            Department: null,
+            Degree: null,
+            PriceBand : 1.5,
+            QuesAnswers: this.QuesAns,
+            IsClicked:false,
+            type:"SOP"
+        },
+        QID : 1,
+        UploadedDocs: null
     }
+
+    componentDidMount(){
+        Axios.get('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json').then(response =>
+        {
+            this.setState({UploadedDocs:response.data})
+        }
+    )
+    }
+
+    onChangedHandler = (event, argument) => {
+        const tempVar = {...this.state.Docs.QuesAnswers}
+
+        console.log("On changed handler");
+    }
+
+    onUniChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.University = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onDepChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.Department = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onDegChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.Degree = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onPriceChangedHandler = (event) => {
+        const tempVar = {...this.state.Docs}
+        tempVar.PriceBand = parseInt(event.target.value);
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onCountryChangedHandler = (event) => {
+        console.log(event.target.value);
+        const tempVar = {...this.state.Docs}
+        tempVar.Country = event.target.value;
+        this.setState({Docs :tempVar});
+        console.log(this.state);
+    }
+
+    onQAChangeHandler = (event) => {
+        console.log("QA me change hua hai BC!!")
+    }
+
+    submit = (event) => {
+        //uploadedArray.push(this.state.UploadedDocs);
+        //console.log(uploadedArray);
+        let uploadedArray = this.state.Docs;
+        console.log(uploadedArray);
+        //Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
+        Axios.post('http://localhost:4000/uploadFellowship', uploadedArray,{headers: {'content-type': 'application/json'}});
+
+    }
+
 
     QuesAns = [<Row>
         <Col xs={12} lg={12} className="Top-margin">

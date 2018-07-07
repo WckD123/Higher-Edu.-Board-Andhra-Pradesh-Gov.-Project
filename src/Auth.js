@@ -5,7 +5,7 @@ class Auth{
     auth0 = new WebAuth({
         domain: 'react-secure.auth0.com',
         clientID: '5NgsctEOriTm20mPYe0f65JI5fr7kHjx',
-        redirectUri: 'https://gettinn.com/callback',
+        redirectUri: 'http://localhost:3001/callback',
         responseType: 'token'
         
     });
@@ -40,8 +40,9 @@ class Auth{
         history.replace('/');
     }
     isAuthenticated = () => {
-        return true //this.loggedIn && 
-        //new Date().getTime() < +localStorage.getItem('expires_at');
+        //return true 
+        this.loggedIn && 
+        new Date().getTime() < +localStorage.getItem('expires_at');
     }
 }
 

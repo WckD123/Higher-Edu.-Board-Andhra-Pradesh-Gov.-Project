@@ -11,10 +11,10 @@ class AddSOP extends Component {
     state = {
         Docs : {
             University: null,
-            Country: null,
+            Country: "United States",
             Department: null,
             Degree: null,
-            PriceBand : null,
+            PriceBand : 1.5,
             QuesAnswers: this.QuesAns,
             IsClicked:false,
             type:"SOP"
@@ -60,7 +60,7 @@ class AddSOP extends Component {
 
     onPriceChangedHandler = (event) => {
         const tempVar = {...this.state.Docs}
-        tempVar.PriceBand = event.target.value;
+        tempVar.PriceBand = parseInt(event.target.value);
         this.setState({Docs :tempVar});
         console.log(this.state);
     }
@@ -78,12 +78,13 @@ class AddSOP extends Component {
     }
 
     submit = (event) => {
-        let uploadedArray = []
-        uploadedArray.push(this.state.UploadedDocs);
+        //uploadedArray.push(this.state.UploadedDocs);
+        //console.log(uploadedArray);
+        let uploadedArray = this.state.Docs;
         console.log(uploadedArray);
-        uploadedArray.push(this.state.Docs);
-        console.log(uploadedArray);
-        Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
+        //Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
+        Axios.post('http://localhost:4000/uploadDocument', uploadedArray,{headers: {'content-type': 'application/json'}});
+
     }
 
     //An array of Question Answers. To be displayed. Have added 1 div as default
@@ -489,10 +490,10 @@ class AddSOP extends Component {
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
                                         <select name="price" value={this.state.Docs.PriceBand} onChange={this.onPriceChangedHandler} >
-                                            <option>$1.5</option>
-                                            <option>$2</option>
-                                            <option>$3</option>
-                                            <option>$100</option>
+                                            <option value="1.5">$1.5</option>
+                                            <option value="2">$2</option>
+                                            <option value="3">$3</option>
+                                            <option value="100">$100</option>
                                         </select>
                                         </center>
                                     </Col>
