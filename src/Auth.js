@@ -40,9 +40,9 @@ class Auth{
         history.replace('/');
     }
     isAuthenticated = () => {
-        //return true 
-        this.loggedIn && 
-        new Date().getTime() < +localStorage.getItem('expires_at');
+        return true 
+        //this.loggedIn //&& 
+        //new Date().getTime() < +localStorage.getItem('expires_at');
     }
 }
 

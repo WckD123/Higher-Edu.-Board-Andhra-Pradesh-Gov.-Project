@@ -17,7 +17,7 @@ class AddSOP extends Component {
             PriceBand : 1.5,
             QuesAnswers: this.QuesAns,
             IsClicked:false,
-            type:"SOP"
+            Type: "FELL"
         },
         QID : 1,
         UploadedDocs: null
@@ -83,8 +83,8 @@ class AddSOP extends Component {
         let uploadedArray = this.state.Docs;
         console.log(uploadedArray);
         //Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
-        Axios.post('http://localhost:4000/uploadFellowship', uploadedArray,{headers: {'content-type': 'application/json'}});
-
+        Axios.post('http://localhost:4000/uploadDocument', uploadedArray,{headers: {'content-type': 'application/json'}});
+        this.props.hideModal();
     }
 
 
@@ -144,7 +144,13 @@ class AddSOP extends Component {
         </Row>
 
     addNewDiv = () => {
+        const qid = this.state.QID;
+        console.log(this.QA);
+        //let inputEl = this.QA.Document.getElementById("SOPQ")
+        //inputEl.id = "SOPQ1";
         this.QuesAns.push(this.QA);
+        //console.log(this.QuesAns);
+        //Set State is called to re-render the element :: NOTE : Find another way if possible ::
         this.setState(this.state);
     }
     
@@ -176,7 +182,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "University..." />
+                                            <input type = "text" name = "University" value={this.state.Docs.University} onChange={this.onUniChangedHandler} placeholder= "University..." />
                                         </center>
                                     </Col>
     
@@ -191,7 +197,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                        <select name="countries">
+                                        <select value={this.state.Docs.Country} onChange={this.onCountryChangedHandler} name="countries">
                                             <option value="United States">United States</option> 
                                             <option value="United Kingdom">United Kingdom</option> 
                                             <option value="Afghanistan">Afghanistan</option> 
@@ -448,7 +454,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "Department..." />
+                                        <input type = "text" name = "Department" value={this.state.Docs.Department} onChange={this.onDepChangedHandler} placeholder= "Department..." />
                                         </center>
                                     </Col>
     
@@ -463,7 +469,7 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                            <input type = "text" name = "name" placeholder= "Degree..." />
+                                        <input type = "text" value={this.state.Docs.Degree} onChange={this.onDegChangedHandler} name = "Degree" placeholder= "Degree..." />
                                         </center>
                                     </Col>
     
@@ -478,11 +484,11 @@ class AddSOP extends Component {
                                     </Col>
                                     <Col md={6} xs={12} lg={6}>
                                         <center>
-                                        <select>
-                                            <option>$1.5</option>
-                                            <option>$2</option>
-                                            <option>$3</option>
-                                            <option>$100</option>
+                                        <select name="price" value={this.state.Docs.PriceBand} onChange={this.onPriceChangedHandler} >
+                                        <option value="1.5">$1.5</option>
+                                            <option value="2">$2</option>
+                                            <option value="3">$3</option>
+                                            <option value="100">$100</option>
                                         </select>
                                         </center>
                                     </Col>
@@ -491,7 +497,7 @@ class AddSOP extends Component {
                             </Col>
                         </Row>
                         <hr />
-                        {this.QuesAns.map(Q => Q)}
+                        <span onChange={this.onQAChangeHandler}>{this.QuesAns.map(Q => Q)}</span>
                         <hr />
                         <Row>
                             <Col xs={12} lg={12} className="Top-margin">
@@ -505,7 +511,7 @@ class AddSOP extends Component {
                         <Row>
                             <Col md={2} xs={0}>
                             </Col>
-                            <Col md={2} xs={12} className="btn btn-success" onClick={this.props.hideModal}>
+                            <Col md={2} xs={12} className="btn btn-success" onClick={this.submit}>
                             Submit
                             </Col>
                             <Col md={2} xs={0}>

@@ -17,9 +17,9 @@ class AddSOP extends Component {
             PriceBand : 1.5,
             QuesAnswers: this.QuesAns,
             IsClicked:false,
-            type:"SOP"
+            Type:"SOP"
         },
-        QID : 1,
+        QID : 0,
         UploadedDocs: null
     }
 
@@ -84,7 +84,7 @@ class AddSOP extends Component {
         console.log(uploadedArray);
         //Axios.post('https://gettin-4d3a5.firebaseio.com/Users/0/UploadedDocs.json', uploadedArray);
         Axios.post('http://localhost:4000/uploadDocument', uploadedArray,{headers: {'content-type': 'application/json'}});
-
+        this.props.hideModal();
     }
 
     //An array of Question Answers. To be displayed. Have added 1 div as default
@@ -98,7 +98,7 @@ class AddSOP extends Component {
                                 <h5>SOP question </h5>
                                 </Col>
                                 <Col md={7} xs={12}>
-                                    <input type = "text" name = "SOPQ" id="SOPQ" placeholder= "SOP Question" onChange={this.onChangedHandler} /> 
+                                    <input type = "text" name = "SOPQ" id={"Ques"+this.state.QID} placeholder= "SOP Question" onChange={() => this.onQuesChangedHandler} /> 
                                 </Col> 
                             </Row>
                         </Col>
@@ -111,7 +111,7 @@ class AddSOP extends Component {
                                 <h5>Answer </h5>
                                 </Col>
                                 <Col md={7} xs={12}>
-                                <textarea class="form-control" name="Ans" rows="5" id="Answer" onChange={this.onChangedHandler}></textarea> 
+                                <textarea class="form-control" name="Ans" rows="5" id={"Ans"+this.state.QID} onChange={this.onAnsChangedHandler}></textarea> 
                                 </Col> 
                             </Row>
                         </Col>
@@ -119,7 +119,8 @@ class AddSOP extends Component {
 
     //Contains 1 div that is appended in the QuesAns array to display more than 1 QA
 
-    QA = <Row>
+    QA =   
+            <Row>
             <Col xs={12} lg={12} className="Top-margin">
                 <Row>
                     <Col md={2} xs={0}>
@@ -128,7 +129,7 @@ class AddSOP extends Component {
                     <h5>SOP question </h5>
                     </Col>
                     <Col md={7} xs={12}>
-                        <input type = "text" name = "SOPQ" id="SOPQ" placeholder= "SOP Question"  onChange={this.onChangedHandler}/> 
+                        <input type = "text" name = "SOPQ" id={"Ques"+this.state.QID} placeholder= "SOP Question"  onChange={this.onChangedHandler}/> 
                     </Col> 
                 </Row>
             </Col>
@@ -141,24 +142,26 @@ class AddSOP extends Component {
                     <h5>Answer </h5>
                     </Col>
                     <Col md={7} xs={12}>
-                    <textarea class="form-control" name="ans" rows="5" id="Answer" onChange={this.onChangedHandler}></textarea> 
+                    <textarea class="form-control" name="ans" rows="5" id={"Ans"+this.state.QID} onChange={this.onChangedHandler}></textarea> 
                     </Col> 
                 </Row>
             </Col>
         </Row>
 
-
     //Function to add new QA in the QuesAns Array
 
-    addNewDiv = () => {
-        const qid = this.state.QID;
+    qid = 0;
+
+    addNewDiv = (qid) => {
         console.log(this.QA);
         //let inputEl = this.QA.Document.getElementById("SOPQ")
         //inputEl.id = "SOPQ1";
+        this.setState({...this.state, QID : qid+1});
         this.QuesAns.push(this.QA);
         //console.log(this.QuesAns);
         //Set State is called to re-render the element :: NOTE : Find another way if possible ::
-        this.setState(this.state);
+        
+        console.log(this.state.QID);
     }
     
     render(){
@@ -507,7 +510,7 @@ class AddSOP extends Component {
                         <Row>
                             <Col xs={12} lg={12} className="Top-margin">
                                 <center> 
-                                    <button className="btn btn-primary" onClick={this.addNewDiv}>
+                                    <button className="btn btn-primary" onClick={() => this.addNewDiv(this.state.QID)}>
                                         Add question
                                     </button>
                                 </center>

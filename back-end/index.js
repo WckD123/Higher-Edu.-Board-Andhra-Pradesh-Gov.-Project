@@ -8,9 +8,9 @@ const app = express();
 
 app.use(cors({origin: 'http://localhost:3001'}));
 
-var jsonParser = bodyParser.json()
+var jsonParser = bodyParser.json();
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
  
 /*
 
@@ -51,37 +51,40 @@ app.get('/users/getAllData', (req,res) => {
 
 app.post('/uploadDocument', jsonParser , (req, res) =>{
 
-    connection.query("Insert into admission_sop_doc (id, university, country, degree, department, price_band, total_sales, year_of_admission ) VALUES (null,'"+req.body.University+"','"+req.body.Country+"','"+req.body.Degree+"','"+req.body.Department+"','"+req.body.PriceBand+"','0','2018')",function(err, result)      
+    connection.query("Insert into admission_sop_doc (id, university, country, degree, department, price_band, total_sales, year_of_admission, type ) VALUES (null,'"+req.body.University+"','"+req.body.Country+"','"+req.body.Degree+"','"+req.body.Department+"','"+req.body.PriceBand+"', 0 ,'2018','"+req.body.Type+"')", function(err, result)      
     {                                                      
       if (err)
          throw err;
+      else {
+        console.log(req.body.QuesAnswers);
+        //connection.query("Insert into doc_content")
+      }
     });
 
     
     //console.log(University, Country, Department, Degree, PriceBand );
 });
 
-app.post('/uploadFellowship', jsonParser , (req, res) =>{
-
-    connection.query("Insert into fellowship_sop_doc (id, university, country, degree, department, price_band, total_sales, year_of_admission ) VALUES (null,'"+req.body.University+"','"+req.body.Country+"','"+req.body.Degree+"','"+req.body.Department+"','"+req.body.PriceBand+"','0','2018')",function(err, result)      
-    {                                                      
-      if (err)
-         throw err;
-    });
-
-});
-
 ///
 
 
 app.get('/uploadedDocs/', jsonParser, (req, res) =>{
-	var sql = "SELECT * FROM admission_sop_doc WHERE owner_id = ?;SELECT * FROM admission_sop_doc WHERE owner_id = ?";
-	connection.query(sql, ['"+req.body.user_id+"', '"+req.body.user_id+"'], (q_err, q_res) => {
+    var uploaded = {}
+	//var sql =  ?;SELECT * FROM admission_sop_doc WHERE owner_id = ?";
+	connection.query("SELECT * FROM admission_sop_doc WHERE owner_id = '"+req.body.user_id+"' ", (q_err, q_res) => {
         if(q_err){
-            return res.send(q_err)
+            return res.send(q_err);
         }
         else{
-            return res.json(q_res)
+            uploaded = {...uploaded, q_res};
+        }
+    })
+    connection.query("SELECT * FROM fellowship_sop_doc WHERE owner_id = '"+req.body.user_id+"' ", (q_err, q_res) => {
+        if(q_err){
+            return res.send(q_err);
+        }
+        else{
+            uploaded = {...uploaded, q_res};
         }
     })
 });
@@ -111,7 +114,7 @@ app.get('/fellowshipContent/:doc_id', jsonParser, (req, res) =>{
 */
 
 app.get('/boughtDocs', jsonParser, (req, res) =>{
-	connection.query("SELECT * FROM transactions WHERE buyer_id = '"+req.body.user_id+"'", (q_err, q_res) => {
+	connection.query("SELECT doc_id FROM transactions WHERE buyer_id = '" +req.body.user_id+ "'", (q_err, q_res) => {
         if(q_err){
             return res.send(q_err)
         }

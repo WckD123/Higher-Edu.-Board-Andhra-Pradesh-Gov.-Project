@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import AddSOP from '../../Components/AddSOPModal/AddSOP';
 import axios from 'axios';
 import AddFellowship from '../AddSOPModal/AddFellowshipModal';
-import AddInterview from '../AddSOPModal/AddInterviewModal';
 
 class PersonProfile extends Component {
 
@@ -90,11 +89,6 @@ class PersonProfile extends Component {
                     showModal={this.showFellowshipHandler}
                     hideModal={this.hideFellowshipHandler}
             />
-            <AddInterview 
-                    show={this.state.showInterviewModal} 
-                    showModal={this.showInterviewHandler}
-                    hideModal={this.hideInterviewHandler}
-            />
             <div className="PersonProfileMain">
                 <div className="row UploadedDocDiv">
                     <div className="col-xs-12 col-md-2">
@@ -138,10 +132,10 @@ class PersonProfile extends Component {
                         </div>
                         </div>
                         <div className="col-xs-4 col-md-4 col-xl-4">
-                        <div className="row">
+                        {/*<div className="row">
                             <div className="col-xs-1 col-md-1 col-xl-1" />
                             <div  onClick={this.showInterviewHandler} className="col-xs-10 col-md-10 col-xl-10 PersonProfileButtons">Add Interview Log</div>
-                        </div>
+                        </div>*/}
                         </div>
                     </div>
                 </div>
