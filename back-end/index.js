@@ -105,6 +105,8 @@ app.get('/documentContent/:doc_id', jsonParser, (req, res) =>{
     })
 });
 
+
+
 /*Incase fellowship docs are mentioned separately
 app.get('/fellowshipContent/:doc_id', jsonParser, (req, res) =>{
 	connection.query("SELECT * FROM doc_content WHERE doc_id = '"+req.body.doc_id+"'", (q_err, q_res) => {
