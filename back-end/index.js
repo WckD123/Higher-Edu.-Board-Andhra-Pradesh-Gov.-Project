@@ -30,9 +30,14 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
+
 connection.connect(err => {
     if(err){
+        console.log("Error connecting to Database")
         return err + "Connection ErrorError";
+    }
+    else {
+        console.log("Database is connected")
     }
 });
 

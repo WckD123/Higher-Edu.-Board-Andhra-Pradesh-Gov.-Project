@@ -11,6 +11,15 @@ class Auth{
     });
 
     loggedIn = false;
+    auth0 = new WebAuth({
+        domain: 'react-secure.auth0.com',
+        clientID: '5NgsctEOriTm20mPYe0f65JI5fr7kHjx',
+        redirectUri: 'http://localhost:3001/callback',
+        responseType: 'token'
+        
+    });
+
+    loggedIn = false;
 
     login = () => {
         this.auth0.authorize();
