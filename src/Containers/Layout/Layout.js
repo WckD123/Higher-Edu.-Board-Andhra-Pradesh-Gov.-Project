@@ -56,7 +56,12 @@ class Layout extends Component {
                     auth = {this.props.auth}
                 />
                 <Switch>
-                    <Route path="/" component={Home} exact />
+                    <Route path="/" render={()=><Home   show={this.state.showLoginModal} 
+                                                    showModal={this.showModalHandler}
+                                                    hideModal={this.hideModalHandler}
+                                                    auth = {this.props.auth}
+                    
+                    />} exact />
                     <Route path='/callback' render={props => this.props.callback(props)}/>
                     {this.props.auth.isAuthenticated() ? <Route path="/profile" component={Profile} /> : null}
                 </Switch>

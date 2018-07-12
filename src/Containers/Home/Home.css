@@ -1,12 +1,13 @@
 .Refer-admission-SOPs {
-    font-family: PTSans;
-    font-size: 45px;
+    font-family: HelveticaNeue;
+    font-size: 24px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: #568ad8;
+    text-align: center;
+    color: #000000;
     padding-top: 20px ;
 }
 
@@ -14,3 +15,77 @@
     background-color: #ebebeb;
   }
 
+.block1{
+    background-color: #568ad8;
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+}
+
+.block2{
+    background-color: #76b4b9;
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+}
+
+.textBlock1{
+    font-family: HelveticaNeue;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ebebeb;
+}
+
+.textBlock2{
+    font-family: HelveticaNeue;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ebebeb;
+}
+
+.LoginButton{
+    width: 270px;
+    height: 60px;
+    border-radius: 10px;
+    border: solid 2px #ebebeb;
+    font-family: HelveticaNeue;
+  font-size: 24px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ebebeb;
+  padding-top: 10px;
+}
+
+.SuccessStoriesCardOuter{
+    background-color: #fafafa;
+    padding-right: 10px;
+    padding-left:10px;
+    text-align: left;
+}
+
+.SuccessStoriesCard{
+    margin-right: 10px;
+    margin-left:10px;
+}
+
+.SuccessStoriesPics{
+    width: 60px;
+  height: 60px;
+    background-color: #d8d8d8;
+  border: solid 1px #979797;
+  border-radius: 30px;
+}

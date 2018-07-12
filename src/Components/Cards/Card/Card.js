@@ -29,13 +29,13 @@ class Card extends Component {
             <div className="Card">
                 <div className="row">
                     <div className="col-xs-4 col-md-4">
-                        <div className="avatar"></div>
+                        <div className="avatar"> <img class="img-fluid img-thumbnail" src="https://media.licdn.com/dms/image/C5103AQF_XBYKfCXyfg/profile-displayphoto-shrink_100_100/0?e=1536796800&v=beta&t=wKJOH71Qv88J7retNMJ2EKRnljb8sXM3CN0gGC5Xseg" /></div>
                     </div>
                     <div className="col-xs-8 col-md-8">
-                        <div className="row">
+                        <div className="row cardName">
                             <h4>{this.props.firstName} {this.props.lastName}</h4>
                         </div>
-                        <div className="row">
+                        <div className="row cardEducation">
                             <p>{this.props.experience}</p>
                         </div>
                         <div className="row">
@@ -45,9 +45,9 @@ class Card extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-3 col-xs-2"></div>
-                    <div className="col-md-6 col-xs-8">
+                    <div className="col-md-6 col-xs-8 cardBuyButton">
                         <hr></hr>
-                        <a href="#"><center><h4 onClick={this.showModalHandler}>View Profile</h4></center></a>
+                        <a href="#"><center><h4 onClick={this.showModalHandler}>Buy SOP</h4></center></a>
                     </div>
                 </div>
             </div>

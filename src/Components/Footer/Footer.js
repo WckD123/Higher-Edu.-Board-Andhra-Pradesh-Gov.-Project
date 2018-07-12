@@ -5,10 +5,9 @@ import './Footer.css';
 
 const footer = () => {
     return (
-        <div className = {["container","footerContainer"].join(' ')}>
-            <hr />
+        <div class="footerContainer">
             <div className ="row">
-                <div className = {['col-md-4','col-xs-12'].join(' ')}>
+                <div className = {['col-md-4','col-xs-12','footerBoxes'].join(' ')}>
                     <div className="row">
                         <div className = {['col-md-3','col-xs-4','col-xs-offset-2'].join(' ')}>
                         <i class="fa fa-bars fa-4x" aria-hidden="true"></i>
@@ -28,7 +27,7 @@ const footer = () => {
                     
                     
                 </div>
-                <div className = {['col-md-4','col-xs-12'].join(' ')}>
+                <div className = {['col-md-4','col-xs-12','footerBoxes'].join(' ')}>
                     <div className="row">
                         <div className = {['col-md-3','col-xs-4','col-xs-offset-4'].join(' ')}>
                         <i class="fa fa-align-left fa-4x" aria-hidden="true"></i>
@@ -47,7 +46,7 @@ const footer = () => {
                     
                     
                 </div>
-                <div className = {['col-md-4','col-xs-12'].join(' ')}>
+                <div className = {['col-md-4','col-xs-12','footerBoxes'].join(' ')}>
                     <div className="row">
                         <div className = {['col-md-3','col-xs-4','col-xs-offset-4'].join(' ')}>
                         <i class="fa fa-phone fa-4x" aria-hidden="true"></i>

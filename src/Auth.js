@@ -40,7 +40,7 @@ class Auth{
         history.replace('/');
     }
     isAuthenticated = () => {
-        return true 
+        return false 
         //this.loggedIn //&& 
         //new Date().getTime() < +localStorage.getItem('expires_at');
     }
