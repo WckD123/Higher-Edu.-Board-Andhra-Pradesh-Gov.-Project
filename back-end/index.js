@@ -10,7 +10,9 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(bodyParser.json());
 
+//TODO: Check Later.
 var corsOptions = {
     origin:"http://localhost:3001",
     optionSuccessStatus:200
@@ -83,6 +85,60 @@ app.get('/api/userforemail/:email', function(req,res) {
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
     });
 });
+
+/**
+ * Upload Doc POST API.
+ * Upload a doc for owner_id
+ * Upload the document metada as well as the content for the created doc in apt. table.
+ */
+app.post('/api/docs/uploaddoc/', function(req,res) {
+    var doc_name = req.body.doc_name;
+    if (req.body.doc_type == 1) {
+      // Admission SOP, Create the name.
+      doc_name = req.body.university + "," + req.body.degree;  
+    }
+    store.createDoc({
+        owner_id:req.body.owner_id,
+        doc_type:req.body.doc_type,
+        doc_name:doc_name,
+        country:req.body.country,
+        university:req.body.university,
+        department:req.body.department,
+        degree:req.body.degree,
+        year_of_admission:req.body.year_of_admission
+    }).then(function(results){
+        // Add the questions and answers to doc content table.
+        req.body.content_arr.forEach(function (valueDict) {
+            console.log("Sop question : %s, Sop Answer : %s", valueDict.sop_question, valueDict.sop_answer);
+        })
+        const doc_id = results[0];
+        var content_arr = [];
+        req.body.content_arr.forEach(function (valueDict) {
+            var finalDict = {};
+            finalDict["doc_id"] = doc_id;
+            finalDict["sop_question"] = valueDict.sop_question;
+            finalDict["sop_answer"] = valueDict.sop_answer;
+            content_arr.push(finalDict); 
+        })
+         store.createDocContent({
+             doc_id : doc_id, 
+             content_arr : content_arr
+            }).then(function(results){
+                return res.status(200).send({
+                    "doc":{
+                        "id":results[0],
+                        "doc_name":doc_name
+                    }
+                });
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}}); 
+            })
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+})
 
 // TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();

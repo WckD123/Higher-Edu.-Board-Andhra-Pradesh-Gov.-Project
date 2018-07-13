@@ -21,5 +21,26 @@ module.exports = {
             'linkedin_experience_latest':li_experience_latest,
             'linkedin_public_profile_link':li_profile_link,
         });
+    },
+
+
+    createDoc({owner_id,doc_type,doc_name,country,university,department,degree,year_of_admission}) {
+        console.log("Create Document for owner_id : %s and doc_type : %s",owner_id,doc_type);
+        return knex('sop_doc').insert({
+            'owner_id':owner_id,
+            'doc_type':doc_type,
+            'doc_name':doc_name,
+            'country':country,
+            'university':university,
+            'department':department,
+            'degree':degree,
+            'year_of_admission':year_of_admission
+        });
+    },
+    // It is expected that content_arr is an array of dictionary
+    // having keys - doc_id,sop_question,sop_answer
+    createDocContent({doc_id,content_arr}) {
+        console.log("Insert doc_id : %s and content_arr: %s", doc_id, content_arr.toString());
+        return knex('doc_content').insert(content_arr);
     }
 }
