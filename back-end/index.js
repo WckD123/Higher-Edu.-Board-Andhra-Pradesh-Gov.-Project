@@ -58,6 +58,31 @@ app.use(cors(corsOptions));
     })
  });
 
+ /**
+  * Get User based on id
+  */
+ app.get('/api/userforid/:id', function(req,res) {
+    store.getUserForId({
+        id:req.params["id"]
+    }).then(function(results){
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    });
+ });
+
+/**
+ * Get User based on email
+ */
+app.get('/api/userforemail/:email', function(req,res) {
+    store.getUser({
+        email:req.params["email"]
+    }).then(function(results){
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    });
+});
 
 // TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();
