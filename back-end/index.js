@@ -39,7 +39,13 @@ app.use(cors(corsOptions));
                 li_experience_latest:req.body.li_experience_latest,
                 li_profile_link:req.body.li_profile_link
             }).then(function(results) {
-                return res.status(200).send({"user":results[0]});    
+                return res.status(200).send({
+                    "user": {
+                        "id":results[0],
+                        "name":req.body.name,
+                        "email":req.body.email,     
+                    }
+                });    
             }).catch(function(error) {
                 console.log(error)
                 return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
