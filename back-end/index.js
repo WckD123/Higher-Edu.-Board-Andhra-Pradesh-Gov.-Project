@@ -1,16 +1,65 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
+const store = require('./store');
 var bodyParser = require('body-parser');
 
 
-const app = express();
+var app = express();
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-app.use(cors({origin: 'http://localhost:3001'}));
+var corsOptions = {
+    origin:"http://localhost:3001",
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 
+/**
+ * Create User POST request handler.
+ * First Checks whether the user exists and if not creats a new user.
+ * Returns created user details or existing user details.
+ */
+
+ app.post('/api/login', function(req,res) {
+    store.getUser({
+        'email':req.body.email
+    }).then(function(results) {
+        if (results.length > 0) {
+            // User exists. Return.
+            return res.status(200).send({"user":results[0]});
+        } else {
+            // user doesn't exist. Create user and return.
+            store.createUser({
+                name:req.body.name,
+                email:req.body.email,
+                li_education_latest:req.body.li_education_latest,
+                li_experience_latest:req.body.li_experience_latest,
+                li_profile_link:req.body.li_profile_link
+            }).then(function(results) {
+                return res.status(200).send({"user":results[0]});    
+            }).catch(function(error) {
+                console.log(error)
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+            })
+        }
+
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+ });
+
+
+// TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();
-
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+
+
+
  
 /*
 
@@ -151,11 +200,14 @@ const shivam = {
     Age : 22
 }
 
-
-app.listen(4000, () => {
-    console.log("We are working on port 4000")
-});
-
 app.get('/', (req, res) => {
     res.json(shivam)
+});
+
+module.exports = app;
+
+app.set('port', process.env.PORT || 3000);
+var server = app.listen(app.get('port'), function() {
+    var port = server.address().port;
+    console.log('Example app listening at http://localhost:%s', port);
 });
