@@ -42,5 +42,15 @@ module.exports = {
     createDocContent({doc_id,content_arr}) {
         console.log("Insert doc_id : %s and content_arr: %s", doc_id, content_arr.toString());
         return knex('doc_content').insert(content_arr);
+    },
+
+    uploadedDocuments({user_id}) {
+        console.log("Uploaded documents id for user_id : %s", user_id);
+        return knex('sop_doc').where({"owner_id":user_id}).select();
+    },
+
+    docContent({doc_id}) {
+        console.log("Doc content for doc_id : %s", doc_id);
+        return knex('doc_content').where({"doc_id":doc_id}).select();
     }
 }

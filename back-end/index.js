@@ -140,6 +140,41 @@ app.post('/api/docs/uploaddoc/', function(req,res) {
     })
 })
 
+
+/**
+ * Get API to return all the uploaded docs. First doc will have its content 
+ * loaded as well.
+ */
+app.get('/api/docs/uploadeddocs/:user_id', function(req,res) {
+    store.uploadedDocuments({
+        user_id:req.params['user_id']
+    }).then(function(results) {
+        var docs = results;
+        if (docs.length > 0) {
+            var firstDocId = docs[0]['id'];
+            store.docContent({
+                doc_id:firstDocId
+            }).then(function(results) {
+                docs[0]['content_arr'] = results;
+                return res.status(200).send(docs);
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+            });
+        } else {
+            return res.status(200).send(results);
+        }
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+    });
+});
+
+
+
+
+
+
 // TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
