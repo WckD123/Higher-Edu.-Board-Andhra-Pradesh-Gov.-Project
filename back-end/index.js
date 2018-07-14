@@ -1,16 +1,202 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
+const store = require('./store');
 var bodyParser = require('body-parser');
 
 
-const app = express();
+var app = express();
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
+<<<<<<< HEAD
 app.use(cors({origin: 'http://localhost:3000'}));
+=======
+//TODO: Check Later.
+var corsOptions = {
+    origin:"http://localhost:3001",
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 
+/**
+ * Create User POST request handler.
+ * First Checks whether the user exists and if not creats a new user.
+ * Returns created user details or existing user details.
+ */
+
+ app.post('/api/login', function(req,res) {
+    store.getUser({
+        'email':req.body.email
+    }).then(function(results) {
+        if (results.length > 0) {
+            // User exists. Return.
+            return res.status(200).send({"user":results[0]});
+        } else {
+            // user doesn't exist. Create user and return.
+            store.createUser({
+                name:req.body.name,
+                email:req.body.email,
+                li_education_latest:req.body.li_education_latest,
+                li_experience_latest:req.body.li_experience_latest,
+                li_profile_link:req.body.li_profile_link
+            }).then(function(results) {
+                return res.status(200).send({
+                    "user": {
+                        "id":results[0],
+                        "name":req.body.name,
+                        "email":req.body.email,     
+                    }
+                });    
+            }).catch(function(error) {
+                console.log(error)
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+            })
+        }
+
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+ });
+
+ /**
+  * Get User based on id
+  */
+ app.get('/api/userforid/:id', function(req,res) {
+    store.getUserForId({
+        id:req.params["id"]
+    }).then(function(results){
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    });
+ });
+
+/**
+ * Get User based on email
+ */
+app.get('/api/userforemail/:email', function(req,res) {
+    store.getUser({
+        email:req.params["email"]
+    }).then(function(results){
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    });
+});
+
+/**
+ * Upload Doc POST API.
+ * Upload a doc for owner_id
+ * Upload the document metada as well as the content for the created doc in apt. table.
+ */
+app.post('/api/docs/uploaddoc/', function(req,res) {
+    var doc_name = req.body.doc_name;
+    if (req.body.doc_type == 1) {
+      // Admission SOP, Create the name.
+      doc_name = req.body.university + "," + req.body.degree;  
+    }
+    store.createDoc({
+        owner_id:req.body.owner_id,
+        doc_type:req.body.doc_type,
+        doc_name:doc_name,
+        country:req.body.country,
+        university:req.body.university,
+        department:req.body.department,
+        degree:req.body.degree,
+        year_of_admission:req.body.year_of_admission
+    }).then(function(results){
+        // Add the questions and answers to doc content table.
+        req.body.content_arr.forEach(function (valueDict) {
+            console.log("Sop question : %s, Sop Answer : %s", valueDict.sop_question, valueDict.sop_answer);
+        })
+        const doc_id = results[0];
+        var content_arr = [];
+        req.body.content_arr.forEach(function (valueDict) {
+            var finalDict = {};
+            finalDict["doc_id"] = doc_id;
+            finalDict["sop_question"] = valueDict.sop_question;
+            finalDict["sop_answer"] = valueDict.sop_answer;
+            content_arr.push(finalDict); 
+        })
+         store.createDocContent({
+             doc_id : doc_id, 
+             content_arr : content_arr
+            }).then(function(results){
+                return res.status(200).send({
+                    "doc":{
+                        "id":results[0],
+                        "doc_name":doc_name
+                    }
+                });
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}}); 
+            })
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+})
+
+
+/**
+ * Get API to return all the uploaded docs. First doc will have its content 
+ * loaded as well.
+ */
+app.get('/api/docs/uploadeddocs/:user_id', function(req,res) {
+    store.uploadedDocuments({
+        user_id:req.params['user_id']
+    }).then(function(results) {
+        var docs = results;
+        if (docs.length > 0) {
+            var firstDocId = docs[0]['id'];
+            store.docContent({
+                doc_id:firstDocId
+            }).then(function(results) {
+                docs[0]['content_arr'] = results;
+                return res.status(200).send(docs);
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+            });
+        } else {
+            return res.status(200).send(results);
+        }
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+    });
+});
+
+/**
+ * Doc content for a doc_id.
+ */
+app.get('/api/docs/doccontent/:doc_id', function(req,res) {
+    store.docContent({
+        doc_id:req.params['doc_id']
+    }).then(function(results) {
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});             
+    });
+})
+>>>>>>> 4ce44ad03c612725a1d27846c51ab1710d5041a1
+
+
+
+// TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();
-
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+
+
+
  
 /*
 
@@ -30,9 +216,14 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
+
 connection.connect(err => {
     if(err){
+        console.log("Error connecting to Database")
         return err + "Connection ErrorError";
+    }
+    else {
+        console.log("Database is connected")
     }
 });
 
@@ -146,11 +337,14 @@ const shivam = {
     Age : 22
 }
 
-
-app.listen(4000, () => {
-    console.log("We are working on port 4000")
-});
-
 app.get('/', (req, res) => {
     res.json(shivam)
+});
+
+module.exports = app;
+
+app.set('port', process.env.PORT || 3000);
+var server = app.listen(app.get('port'), function() {
+    var port = server.address().port;
+    console.log('Example app listening at http://localhost:%s', port);
 });
