@@ -53,6 +53,11 @@
     background-color: #568ad8;
 }
 
+.searchButton:hover { 
+    cursor: pointer;
+    background-color:  #568aff;
+}
+
 .searchButtonText{
     font-family: HelveticaNeue;
   font-size: 20px;
