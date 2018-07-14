@@ -69,6 +69,13 @@ module.exports = {
     documentsMetadataforDocIds({doc_ids}) {
         console.log("Get documents Metadata for doc_ids : %s", doc_ids.toString());
         return knex('sop_doc').whereIn('id',doc_ids).select();
+    },
+
+    search({search_text}) {
+        console.log("Search for search_text : %s", search_text);
+        var results_limit = 50;
+        //'owner_id','owner_name','owner_li_link','doc_name','year_of_admission'
+        return knex('sop_doc').select().orWhereRaw('MATCH(doc_name,country,university,degree,year_of_admission) AGAINST(? IN NATURAL LANGUAGE MODE)',search_text);
     }
 
 }

@@ -31,6 +31,7 @@ exports.up = function(knex, Promise) {
             t.string('year_of_admission').notNullable()
             t.timestamps(false,true)
             t.index(['doc_name','country','university','degree','year_of_admission'],'FULLTEXT')
+            
         })
     } 
     function createDocContentTable() {
