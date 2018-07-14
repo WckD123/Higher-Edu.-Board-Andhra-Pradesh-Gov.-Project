@@ -58,6 +58,16 @@ module.exports = {
     recordTransaction({transaction_arr}) {
         console.log("Record transaction for the transaction array : %s", transaction_arr.toString());
         return knex("transactions").insert(transaction_arr);
+    },
+
+    purchasedDocumentIds({user_id}) {
+        console.log("purchased documents for user_id : %s", user_id);
+        return knex("transactions").where({"buyer_id":user_id}).select('doc_id');
+    },
+
+    documentsMetadataforDocIds({doc_ids}) {
+        console.log("Get documents Metadata for doc_ids : %s", doc_ids.toString());
+        return knex('sop_doc').whereIn('id',doc_ids).select();
     }
 
 }

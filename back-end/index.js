@@ -210,6 +210,53 @@ app.post('/api/transactions/recordtransaction', function(req,res) {
     });
 });
 
+/**
+ * Get Purchased documents for a user_id.
+ * Returns the document metadata of all the purchased documents and content of first document.
+ */
+app.get('/api/docs/purchaseddocs/:user_id', function(req,res) {
+    store.purchasedDocumentIds({
+        user_id:req.params['user_id']
+    }).then(function(results){
+        if (results.length > 0) {
+             //Get the documents metadata for doc_ids in results.
+             var document_ids = [];
+             results.forEach(function(dict) {
+                document_ids.push(dict["doc_id"])
+             })
+             store.documentsMetadataforDocIds({
+                 doc_ids:document_ids
+             }).then(function(documents) {
+                // Get the content for first document.
+                var docs = documents;
+                if (docs.length > 0) {
+                    var firstDocId = docs[0]['id'];
+                    store.docContent({
+                        doc_id:firstDocId
+                    }).then(function(results) {
+                        docs[0]['content_arr'] = results;
+                        return res.status(200).send(docs);
+                    }).catch(function(error) {
+                        console.log(error);
+                        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+                    });
+                } else {
+                    return res.status(200).send(docs);
+                }        
+             }).catch(function(error) {
+                console.log(error);
+                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                             
+             });
+        } else {
+            // No purchased docs just return.
+            res.status(200).send(results);
+        }
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                     
+    });
+});
+
 
 // TODO: Check if the code following these lines are still valid.
 var jsonParser = bodyParser.json();
