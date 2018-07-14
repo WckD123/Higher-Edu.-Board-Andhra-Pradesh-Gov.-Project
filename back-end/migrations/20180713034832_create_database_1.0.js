@@ -21,14 +21,16 @@ exports.up = function(knex, Promise) {
             t.increments('id').primary()
             t.integer('owner_id').unsigned().notNullable()
             t.foreign('owner_id').references('user.id')
+            t.string('owner_name').notNullable()
+            t.string('owner_li_link').notNullable()
             t.integer('doc_type').notNullable()
             t.string('doc_name').notNullable()
             t.string('country').notNullable()
             t.string('university')
-            t.string('department')
             t.string('degree')
-            t.integer('year_of_admission').notNullable()
+            t.string('year_of_admission').notNullable()
             t.timestamps(false,true)
+            t.index(['doc_name','country','university','degree','year_of_admission'],'FULLTEXT')
         })
     } 
     function createDocContentTable() {

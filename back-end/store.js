@@ -24,15 +24,16 @@ module.exports = {
     },
 
 
-    createDoc({owner_id,doc_type,doc_name,country,university,department,degree,year_of_admission}) {
+    createDoc({owner_id,owner_name,owner_li_link,doc_type,doc_name,country,university,department,degree,year_of_admission}) {
         console.log("Create Document for owner_id : %s and doc_type : %s",owner_id,doc_type);
         return knex('sop_doc').insert({
             'owner_id':owner_id,
+            'owner_name':owner_name,
+            'owner_li_link':owner_li_link,
             'doc_type':doc_type,
             'doc_name':doc_name,
             'country':country,
             'university':university,
-            'department':department,
             'degree':degree,
             'year_of_admission':year_of_admission
         });
