@@ -12,9 +12,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-app.use(cors({origin: 'http://localhost:3000'}));
-=======
 //TODO: Check Later.
 var corsOptions = {
     origin:"http://localhost:3001",
@@ -185,9 +182,33 @@ app.get('/api/docs/doccontent/:doc_id', function(req,res) {
         console.log(error);
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});             
     });
-})
->>>>>>> 4ce44ad03c612725a1d27846c51ab1710d5041a1
+});
 
+
+/**
+ * Record Transaction.
+ */
+app.post('/api/transactions/recordtransaction', function(req,res) {
+    var buyer_id = req.body.buyer_id;
+    var doc_ids = req.body.doc_ids;
+    var payment_reference_id = req.body.payment_reference_id;
+    var final_transaction_arr = []
+    doc_ids.forEach(function(doc_id) {
+        var doc_dict = {};
+        doc_dict["buyer_id"] = buyer_id;
+        doc_dict["doc_id"] = doc_id;
+        doc_dict["payment_reference_id"] = payment_reference_id;
+        final_transaction_arr.push(doc_dict);
+    })
+    store.recordTransaction({
+        transaction_arr:final_transaction_arr
+    }).then(function(results) {
+        res.status(200).send({"msg":"Transaction successfully recorded."});
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                     
+    });
+});
 
 
 // TODO: Check if the code following these lines are still valid.

@@ -52,5 +52,12 @@ module.exports = {
     docContent({doc_id}) {
         console.log("Doc content for doc_id : %s", doc_id);
         return knex('doc_content').where({"doc_id":doc_id}).select();
+    },
+
+    // transaction_arr should contain buyer_id,doc_id,payment_reference_id
+    recordTransaction({transaction_arr}) {
+        console.log("Record transaction for the transaction array : %s", transaction_arr.toString());
+        return knex("transactions").insert(transaction_arr);
     }
+
 }
