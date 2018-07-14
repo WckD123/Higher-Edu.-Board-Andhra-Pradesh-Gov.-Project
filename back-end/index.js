@@ -170,8 +170,19 @@ app.get('/api/docs/uploadeddocs/:user_id', function(req,res) {
     });
 });
 
-
-
+/**
+ * Doc content for a doc_id.
+ */
+app.get('/api/docs/doccontent/:doc_id', function(req,res) {
+    store.docContent({
+        doc_id:req.params['doc_id']
+    }).then(function(results) {
+        return res.status(200).send(results);
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});             
+    });
+})
 
 
 
