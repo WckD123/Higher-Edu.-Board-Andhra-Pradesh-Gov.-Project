@@ -195,6 +195,7 @@ app.get('/api/userforemail/:email', function(req,res) {
  * Upload a doc for owner_id
  * Upload the document metada as well as the content for the created doc in apt. table.
  */
+// TODO: Really Slow. Check how you can make it.
 app.post('/api/docs/uploaddoc/', function(req,res) {
     var doc_name = req.body.doc_name;
     if (req.body.doc_type == 1) {
@@ -209,6 +210,7 @@ app.post('/api/docs/uploaddoc/', function(req,res) {
             owner_id:req.body.owner_id,
             owner_name:owner['name'],
             owner_li_link:owner['linkedin_public_profile_link'],
+            owner_pictureUrl:owner['pictureUrl'],
             doc_type:req.body.doc_type,
             doc_name:doc_name,
             country:req.body.country,
