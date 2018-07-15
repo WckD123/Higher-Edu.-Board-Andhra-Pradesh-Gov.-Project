@@ -12,7 +12,7 @@ module.exports = {
         return knex('user').where({"id":id}).select();
     },
 
-    createUser({name,email,li_education_latest,li_experience_latest, li_profile_link}) {
+    createUser({name,email,li_education_latest,li_experience_latest, li_profile_link, pictureUrl}) {
         console.log("create user for name %s,email %s, li_education %s, li_experience %s, li_profile %s", name,email,li_education_latest,li_experience_latest,li_profile_link);
         return knex('user').insert({
             'name':name,
@@ -20,7 +20,20 @@ module.exports = {
             'linkedin_education_latest':li_education_latest,
             'linkedin_experience_latest':li_experience_latest,
             'linkedin_public_profile_link':li_profile_link,
+            'pictureUrl':pictureUrl
         });
+    },
+
+    updateUserForEmail({name,email,li_education_latest,li_experience_latest, li_profile_link, pictureUrl}) {
+        console.log("Update user data for email_id : %s", email);
+        return knex('user').where({'email':email}).update({
+            'name':name,
+            'email':email,
+            'linkedin_education_latest':li_education_latest,
+            'linkedin_experience_latest':li_experience_latest,
+            'linkedin_public_profile_link':li_profile_link,
+            'pictureUrl':pictureUrl
+        })
     },
 
 

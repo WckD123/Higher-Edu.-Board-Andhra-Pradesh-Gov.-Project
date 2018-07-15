@@ -4,6 +4,13 @@ const mysql = require('mysql');
 const store = require('./store');
 var bodyParser = require('body-parser');
 
+// LinkedIn settings.
+const LINKEDIN_CLIENT_ID = "81tc3o26zl4hkj";
+const LINKEDIN_CLIENT_SECRET = "pv8uvqNQWXRs1CvI";
+const LINKEDIN_CALLBACK_URL = "http://localhost:3000/oauth/linkedin/callback";
+const LI_SCOPE = ['r_basicprofile', 'r_emailaddress'];
+const LI_STATE = "xabcd1234"; //TODO: Choose a better random score for linkedin.
+var Linkedin = require('node-linkedin')(LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, LINKEDIN_CALLBACK_URL);
 
 var app = express();
 app.use(express.static('public'))
@@ -59,6 +66,103 @@ app.use(cors(corsOptions));
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
     })
  });
+
+/**
+ * Client call to do login with linkedin.
+ */
+app.get('/api/linkedin/login',function(req,res) {
+    Linkedin.auth.authorize(res,LI_SCOPE,LI_STATE);
+})
+
+/**
+ * LinkedIn callback call.
+ */
+app.get('/oauth/linkedin/callback', function(req,res) {
+    if (!req.query.code) {
+        console.log('USER DENIED ACCCESS');
+        return res.redirect('/');
+    }
+    else {
+        Linkedin.auth.getAccessToken(res, req.query.code, req.query.state, function(err, result) {
+            if ( err ) {
+                console.error(err);
+                return res.redirect('/');
+            }
+            // Got a valid access token.
+           var linkedin = Linkedin.init(result['access_token']);
+           // Fetch the user details.
+            linkedin.people.me(function(err, $in) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect('/');
+                }
+                // Loads the profile of access token owner.
+                var email = $in['emailAddress'];
+                store.getUser({
+                    email:email
+                }).then(function(results) {
+                    if (results.length > 0) {
+                        // Update.the user with the email id including access_token.
+                        store.updateUserForEmail({
+                            email:email,
+                            name:$in['formattedName'],
+                            li_education_latest:$in['headline'],
+                            li_experience_latest:$in['headline'],
+                            li_profile_link:$in['publicProfileUrl'],
+                            pictureUrl:$in['pictureUrl']
+                        }).then(function(result) {
+                            console.log("result after updation : "+result);
+                            // Successfully update the user.
+                            // TODO: JWT token should also be sent.
+                            return res.status(200).send({
+                                'name':$in['formattedName'],
+                                'email':$in['emailAddress'],
+                                'li_education_latest':$in['headline'],
+                                'li_experience_latest':$in['headline'],
+                                'li_profile_link':$in['publicProfileUrl'],
+                                'pictureUrl':$in['pictureUrl']
+                            })
+
+                        }).catch(function(error) {
+                            console.log(error);
+                            return res.redirect('/');
+                        })
+                    } else {
+                        // Insert the user with all the details including access_token.
+                        store.createUser({
+                            name:$in['formattedName'],
+                            email:$in['emailAddress'],
+                            li_education_latest:$in['headline'],
+                            li_experience_latest:$in['headline'],
+                            li_profile_link:$in['publicProfileUrl'],
+                            li_access_token:access_token,
+                            pictureUrl:$in['pictureUrl']                            
+                        }).then(function(result) {
+                            // TODO: JWT token should also be sent.
+                            console.log("result after creation : " + result);
+                            return res.status(200).send({
+                                'id':result,
+                                'name':$in['formattedName'],
+                                'email':$in['emailAddress'],
+                                'li_education_latest':$in['headline'],
+                                'li_experience_latest':$in['headline'],
+                                'li_profile_link':$in['publicProfileUrl'],
+                                'pictureUrl':$in['pictureUrl']
+                            })
+                        }).catch(function(error) {
+                            console.log(error);
+                            return res.redirect('/');
+                        })
+                    }
+                }).catch(function(error) {
+                    console.log(error);
+                    return res.redirect('/');
+                })
+               
+            });
+        });
+    }
+});
 
  /**
   * Get User based on id
@@ -280,6 +384,10 @@ app.get('/api/search', function(req,res) {
         console.log(error);
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
     });
+});
+
+app.get('/', function(request, response){
+   response.sendFile('/index.html');
 });
 
 module.exports = app;
