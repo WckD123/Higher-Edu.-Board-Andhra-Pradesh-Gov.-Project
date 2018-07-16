@@ -10,7 +10,7 @@ module.exports = {
 
     getUserForEmail({email}) {
         console.log("Get user for email : %s", email);
-        return knex('user').where({'email':email});
+        return knex('user').where({'email':email}).select();
     },
 
     createUser({name,email,li_headline, li_profile_link, pictureUrl}) {
@@ -89,6 +89,19 @@ module.exports = {
         var results_limit = 50;
         //'owner_id','owner_name','owner_li_link','doc_name','year_of_admission'
         return knex('sop_doc').select().orWhereRaw('MATCH(doc_name,country,university,degree,year_of_admission) AGAINST(? IN NATURAL LANGUAGE MODE)',search_text);
+    },
+
+    updateAccount({user_id, account_number,ifsc_code}) {
+        console.log("Update the account status for user_id : %s", user_id);
+        return knex('user').where({'id':user_id}).update({
+            'account_number':account_number,
+            'ifsc_code':ifsc_code,
+        })
+    },
+
+    getAccountStatus({user_id}) {
+        console.log("Get the account staus for user_id : %s", user_id);
+        return knex('user').select('account_number', 'ifsc_code').where({'id':user_id});
     }
 
 }

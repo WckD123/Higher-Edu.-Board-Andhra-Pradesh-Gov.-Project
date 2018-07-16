@@ -325,6 +325,37 @@ app.get('/api/search', function(req,res) {
     });
 });
 
+/**
+ * Update the acccount credentials for the logged in user.
+ */
+app.post('/api/updateaccount',VerifyToken,function(req,res) {
+    store.updateAccount({
+        user_id:req.loggedInUserId,
+        account_number:req.body.account_number,
+        ifsc_code:req.body.ifsc_code
+    }).then(function(result) {
+        console.log(result);
+        return res.status(200).send({"rows_udpated": result});
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+});
+
+/**
+ * Get the account status of the logged in user.
+ */
+app.get('/api/accountstatus',VerifyToken ,function(req,res) {
+    store.getAccountStatus({
+        user_id:req.loggedInUserId
+    }).then(function(results) {
+        return res.status(200).send(results[0]);
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+})
+
 app.get('/', function(request, response){
    response.sendFile('/index.html');
 });
