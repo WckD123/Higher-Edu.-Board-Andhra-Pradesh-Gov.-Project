@@ -24,47 +24,6 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 /**
- * Create User POST request handler.
- * First Checks whether the user exists and if not creats a new user.
- * Returns created user details or existing user details.
- */
-
-//  app.post('/api/login', function(req,res) {
-//     store.getUser({
-//         'email':req.body.email
-//     }).then(function(results) {
-//         if (results.length > 0) {
-//             // User exists. Return.
-//             return res.status(200).send({"user":results[0]});
-//         } else {
-//             // user doesn't exist. Create user and return.
-//             store.createUser({
-//                 name:req.body.name,
-//                 email:req.body.email,
-//                 li_education_latest:req.body.li_education_latest,
-//                 li_experience_latest:req.body.li_experience_latest,
-//                 li_profile_link:req.body.li_profile_link
-//             }).then(function(results) {
-//                 return res.status(200).send({
-//                     "user": {
-//                         "id":results[0],
-//                         "name":req.body.name,
-//                         "email":req.body.email,     
-//                     }
-//                 });    
-//             }).catch(function(error) {
-//                 console.log(error)
-//                 return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
-//             })
-//         }
-
-//     }).catch(function(error) {
-//         console.log(error);
-//         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
-//     })
-//  });
-
-/**
  * Client call for login with linkedin.
  */
 app.get('/api/login',function(req,res) {
@@ -107,8 +66,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
                         store.updateUserForEmail({
                             email:email,
                             name:$in['formattedName'],
-                            li_education_latest:$in['headline'],
-                            li_experience_latest:$in['headline'],
+                            li_headline:$in['headline'],
                             li_profile_link:$in['publicProfileUrl'],
                             pictureUrl:$in['pictureUrl']
                         }).then(function(result) {
@@ -128,8 +86,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
                         store.createUser({
                             name:$in['formattedName'],
                             email:$in['emailAddress'],
-                            li_education_latest:$in['headline'],
-                            li_experience_latest:$in['headline'],
+                            li_headline:$in['headline'],
                             li_profile_link:$in['publicProfileUrl'],
                             pictureUrl:$in['pictureUrl']                            
                         }).then(function(result) {
@@ -158,6 +115,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
 
  /**
   * Get User based on id
+  * Autenticated call with middelware - VerifyToken
   */
  app.get('/api/userdetails',VerifyToken,function(req,res) {
     store.getUser({
@@ -195,7 +153,6 @@ app.post('/api/docs/uploaddoc/', function(req,res) {
             doc_name:doc_name,
             country:req.body.country,
             university:req.body.university,
-            department:req.body.department,
             degree:req.body.degree,
             year_of_admission:req.body.year_of_admission
         }).then(function(results){

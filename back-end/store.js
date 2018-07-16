@@ -13,32 +13,30 @@ module.exports = {
         return knex('user').where({'email':email});
     },
 
-    createUser({name,email,li_education_latest,li_experience_latest, li_profile_link, pictureUrl}) {
-        console.log("create user for name %s,email %s, li_education %s, li_experience %s, li_profile %s", name,email,li_education_latest,li_experience_latest,li_profile_link);
+    createUser({name,email,li_headline, li_profile_link, pictureUrl}) {
+        console.log("create user for name %s,email %s, li_headline %s, li_profile %s", name,email,li_headline,li_profile_link);
         return knex('user').insert({
             'name':name,
             'email':email,
-            'linkedin_education_latest':li_education_latest,
-            'linkedin_experience_latest':li_experience_latest,
+            'li_headline':li_headline,
             'linkedin_public_profile_link':li_profile_link,
             'pictureUrl':pictureUrl
         });
     },
 
-    updateUserForEmail({name,email,li_education_latest,li_experience_latest, li_profile_link, pictureUrl}) {
+    updateUserForEmail({name,email,li_headline, li_profile_link, pictureUrl}) {
         console.log("Update user data for email_id : %s", email);
         return knex('user').where({'email':email}).update({
             'name':name,
             'email':email,
-            'linkedin_education_latest':li_education_latest,
-            'linkedin_experience_latest':li_experience_latest,
+            'li_headline':li_headline,
             'linkedin_public_profile_link':li_profile_link,
             'pictureUrl':pictureUrl
         })
     },
 
 
-    createDoc({owner_id,owner_name,owner_li_link,owner_pictureUrl,doc_type,doc_name,country,university,department,degree,year_of_admission}) {
+    createDoc({owner_id,owner_name,owner_li_link,owner_pictureUrl,doc_type,doc_name,country,university,degree,year_of_admission}) {
         console.log("Create Document for owner_id : %s and doc_type : %s",owner_id,doc_type);
         return knex('sop_doc').insert({
             'owner_id':owner_id,
