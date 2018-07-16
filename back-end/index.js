@@ -3,14 +3,11 @@ const cors = require('cors');
 const mysql = require('mysql');
 const store = require('./store');
 var bodyParser = require('body-parser');
+var auth = require('./auth');
+var config = require('./config')
+var VerifyToken = require('./VerifyToken');
 
-// LinkedIn settings.
-const LINKEDIN_CLIENT_ID = "81tc3o26zl4hkj";
-const LINKEDIN_CLIENT_SECRET = "pv8uvqNQWXRs1CvI";
-const LINKEDIN_CALLBACK_URL = "http://localhost:3000/oauth/linkedin/callback";
-const LI_SCOPE = ['r_basicprofile', 'r_emailaddress'];
-const LI_STATE = "xabcd1234"; //TODO: Choose a better random score for linkedin.
-var Linkedin = require('node-linkedin')(LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, LINKEDIN_CALLBACK_URL);
+var Linkedin = require('node-linkedin')(config.LINKEDIN_CLIENT_ID, config.LINKEDIN_CLIENT_SECRET, config.LINKEDIN_CALLBACK_URL);
 
 var app = express();
 app.use(express.static('public'))
@@ -32,46 +29,46 @@ app.use(cors(corsOptions));
  * Returns created user details or existing user details.
  */
 
- app.post('/api/login', function(req,res) {
-    store.getUser({
-        'email':req.body.email
-    }).then(function(results) {
-        if (results.length > 0) {
-            // User exists. Return.
-            return res.status(200).send({"user":results[0]});
-        } else {
-            // user doesn't exist. Create user and return.
-            store.createUser({
-                name:req.body.name,
-                email:req.body.email,
-                li_education_latest:req.body.li_education_latest,
-                li_experience_latest:req.body.li_experience_latest,
-                li_profile_link:req.body.li_profile_link
-            }).then(function(results) {
-                return res.status(200).send({
-                    "user": {
-                        "id":results[0],
-                        "name":req.body.name,
-                        "email":req.body.email,     
-                    }
-                });    
-            }).catch(function(error) {
-                console.log(error)
-                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
-            })
-        }
+//  app.post('/api/login', function(req,res) {
+//     store.getUser({
+//         'email':req.body.email
+//     }).then(function(results) {
+//         if (results.length > 0) {
+//             // User exists. Return.
+//             return res.status(200).send({"user":results[0]});
+//         } else {
+//             // user doesn't exist. Create user and return.
+//             store.createUser({
+//                 name:req.body.name,
+//                 email:req.body.email,
+//                 li_education_latest:req.body.li_education_latest,
+//                 li_experience_latest:req.body.li_experience_latest,
+//                 li_profile_link:req.body.li_profile_link
+//             }).then(function(results) {
+//                 return res.status(200).send({
+//                     "user": {
+//                         "id":results[0],
+//                         "name":req.body.name,
+//                         "email":req.body.email,     
+//                     }
+//                 });    
+//             }).catch(function(error) {
+//                 console.log(error)
+//                 return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+//             })
+//         }
 
-    }).catch(function(error) {
-        console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
-    })
- });
+//     }).catch(function(error) {
+//         console.log(error);
+//         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+//     })
+//  });
 
 /**
- * Client call to do login with linkedin.
+ * Client call for login with linkedin.
  */
-app.get('/api/linkedin/login',function(req,res) {
-    Linkedin.auth.authorize(res,LI_SCOPE,LI_STATE);
+app.get('/api/login',function(req,res) {
+    Linkedin.auth.authorize(res,config.LI_SCOPE,config.LI_STATE);
 })
 
 /**
@@ -79,12 +76,14 @@ app.get('/api/linkedin/login',function(req,res) {
  */
 app.get('/oauth/linkedin/callback', function(req,res) {
     if (!req.query.code) {
+        // TODO:
         console.log('USER DENIED ACCCESS');
         return res.redirect('/');
     }
     else {
         Linkedin.auth.getAccessToken(res, req.query.code, req.query.state, function(err, result) {
             if ( err ) {
+                // TODO:
                 console.error(err);
                 return res.redirect('/');
             }
@@ -92,16 +91,18 @@ app.get('/oauth/linkedin/callback', function(req,res) {
            var linkedin = Linkedin.init(result['access_token']);
            // Fetch the user details.
             linkedin.people.me(function(err, $in) {
+                // TODO:
                 if (err) {
                     console.log(err);
                     return res.redirect('/');
                 }
                 // Loads the profile of access token owner.
                 var email = $in['emailAddress'];
-                store.getUser({
+                store.getUserForEmail({
                     email:email
                 }).then(function(results) {
                     if (results.length > 0) {
+                        var user_id = results[0]['id'];
                         // Update.the user with the email id including access_token.
                         store.updateUserForEmail({
                             email:email,
@@ -112,18 +113,13 @@ app.get('/oauth/linkedin/callback', function(req,res) {
                             pictureUrl:$in['pictureUrl']
                         }).then(function(result) {
                             console.log("result after updation : "+result);
-                            // Successfully update the user.
-                            // TODO: JWT token should also be sent.
-                            return res.status(200).send({
-                                'name':$in['formattedName'],
-                                'email':$in['emailAddress'],
-                                'li_education_latest':$in['headline'],
-                                'li_experience_latest':$in['headline'],
-                                'li_profile_link':$in['publicProfileUrl'],
-                                'pictureUrl':$in['pictureUrl']
-                            })
-
+                           var token =  auth.getToken({
+                                user_id:user_id,
+                                email:email
+                            });
+                           res.status(200).send({'auth_token':token}); 
                         }).catch(function(error) {
+                            //TODO:
                             console.log(error);
                             return res.redirect('/');
                         })
@@ -135,26 +131,22 @@ app.get('/oauth/linkedin/callback', function(req,res) {
                             li_education_latest:$in['headline'],
                             li_experience_latest:$in['headline'],
                             li_profile_link:$in['publicProfileUrl'],
-                            li_access_token:access_token,
                             pictureUrl:$in['pictureUrl']                            
                         }).then(function(result) {
-                            // TODO: JWT token should also be sent.
                             console.log("result after creation : " + result);
-                            return res.status(200).send({
-                                'id':result,
-                                'name':$in['formattedName'],
-                                'email':$in['emailAddress'],
-                                'li_education_latest':$in['headline'],
-                                'li_experience_latest':$in['headline'],
-                                'li_profile_link':$in['publicProfileUrl'],
-                                'pictureUrl':$in['pictureUrl']
-                            })
+                            var token =  auth.getToken({
+                                user_id:result,
+                                email:$in['emailAddress']
+                            });
+                            res.status(200).send({'auth_token':token});
                         }).catch(function(error) {
+                            //TODO:
                             console.log(error);
                             return res.redirect('/');
                         })
                     }
                 }).catch(function(error) {
+                    //TODO:
                     console.log(error);
                     return res.redirect('/');
                 })
@@ -167,28 +159,16 @@ app.get('/oauth/linkedin/callback', function(req,res) {
  /**
   * Get User based on id
   */
- app.get('/api/userforid/:id', function(req,res) {
-    store.getUserForId({
-        id:req.params["id"]
+ app.get('/api/userdetails',VerifyToken,function(req,res) {
+    store.getUser({
+        id:req.loggedInUserId,
+        email:req.loggedInUserEmail
     }).then(function(results){
         return res.status(200).send(results);
     }).catch(function(error) {
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
     });
  });
-
-/**
- * Get User based on email
- */
-app.get('/api/userforemail/:email', function(req,res) {
-    store.getUser({
-        email:req.params["email"]
-    }).then(function(results){
-        return res.status(200).send(results);
-    }).catch(function(error) {
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
-    });
-});
 
 /**
  * Upload Doc POST API.
