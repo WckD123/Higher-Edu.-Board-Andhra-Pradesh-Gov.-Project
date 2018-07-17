@@ -13,6 +13,11 @@ module.exports = {
         return knex('user').where({'email':email}).select();
     },
 
+    getUserForId({user_id}) {
+        console.log("Get user for id : %s", user_id);
+        return knex('user').where({'id':user_id}).select();
+    },
+
     createUser({name,email,li_headline, li_profile_link, pictureUrl}) {
         console.log("create user for name %s,email %s, li_headline %s, li_profile %s", name,email,li_headline,li_profile_link);
         return knex('user').insert({

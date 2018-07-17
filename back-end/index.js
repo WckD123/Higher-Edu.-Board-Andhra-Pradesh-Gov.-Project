@@ -134,18 +134,18 @@ app.get('/oauth/linkedin/callback', function(req,res) {
  * Upload the document metada as well as the content for the created doc in apt. table.
  */
 // TODO: Really Slow. Check how you can make it.
-app.post('/api/docs/uploaddoc/', function(req,res) {
+app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
     var doc_name = req.body.doc_name;
     if (req.body.doc_type == 1) {
       // Admission SOP, Create the name.
       doc_name = req.body.university + "," + req.body.degree;  
     }
     store.getUserForId({
-        id:req.body.owner_id
+        user_id:req.loggedInUserId
     }).then(function(results){
         var owner = results[0];
         store.createDoc({
-            owner_id:req.body.owner_id,
+            owner_id:req.loggedInUserId,
             owner_name:owner['name'],
             owner_li_link:owner['linkedin_public_profile_link'],
             owner_pictureUrl:owner['pictureUrl'],
@@ -198,9 +198,9 @@ app.post('/api/docs/uploaddoc/', function(req,res) {
  * Get API to return all the uploaded docs. First doc will have its content 
  * loaded as well.
  */
-app.get('/api/docs/uploadeddocs/:user_id', function(req,res) {
+app.get('/api/docs/uploadeddocs',VerifyToken, function(req,res) {
     store.uploadedDocuments({
-        user_id:req.params['user_id']
+        user_id:req.loggedInUserId
     }).then(function(results) {
         var docs = results;
         if (docs.length > 0) {
@@ -226,7 +226,7 @@ app.get('/api/docs/uploadeddocs/:user_id', function(req,res) {
 /**
  * Doc content for a doc_id.
  */
-app.get('/api/docs/doccontent/:doc_id', function(req,res) {
+app.get('/api/docs/doccontent/:doc_id',VerifyToken ,function(req,res) {
     store.docContent({
         doc_id:req.params['doc_id']
     }).then(function(results) {
@@ -241,8 +241,8 @@ app.get('/api/docs/doccontent/:doc_id', function(req,res) {
 /**
  * Record Transaction.
  */
-app.post('/api/transactions/recordtransaction', function(req,res) {
-    var buyer_id = req.body.buyer_id;
+app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
+    var buyer_id = req.loggedInUserId;
     var doc_ids = req.body.doc_ids;
     var payment_reference_id = req.body.payment_reference_id;
     var final_transaction_arr = []
