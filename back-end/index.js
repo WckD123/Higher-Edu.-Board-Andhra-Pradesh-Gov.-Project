@@ -266,10 +266,11 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
 /**
  * Get Purchased documents for a user_id.
  * Returns the document metadata of all the purchased documents and content of first document.
+ * Added authentication middleware
  */
-app.get('/api/docs/purchaseddocs/:user_id', function(req,res) {
+app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
     store.purchasedDocumentIds({
-        user_id:req.params['user_id']
+        user_id:req.loggedInUserId
     }).then(function(results){
         if (results.length > 0) {
              //Get the documents metadata for doc_ids in results.
