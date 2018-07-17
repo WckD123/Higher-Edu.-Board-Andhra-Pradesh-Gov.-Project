@@ -357,13 +357,14 @@ app.get('/api/accountstatus',VerifyToken ,function(req,res) {
 })
 
 app.get('/', function(request, response){
-   response.sendFile('/index.html');
+   response.sendFile('./index.html');
 });
 
 module.exports = app;
 
 app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
+    var host = server.address().host; 	
     var port = server.address().port;
-    console.log('Example app listening at http://localhost:%s', port);
+    console.log('Example app listening at http://localhost:%s',host, port);
 });
