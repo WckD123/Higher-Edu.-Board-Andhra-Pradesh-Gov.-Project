@@ -4,7 +4,7 @@ module.exports  = {
     // LinkedIn settings.
     'LINKEDIN_CLIENT_ID' : "81tc3o26zl4hkj",
     'LINKEDIN_CLIENT_SECRET' : "pv8uvqNQWXRs1CvI",
-    'LINKEDIN_CALLBACK_URL' : "http://localhost:3000/oauth/linkedin/callback",
+    'LINKEDIN_CALLBACK_URL' : "http://gettinn.com/oauth/linkedin/callback",
     'LI_SCOPE' : ['r_basicprofile', 'r_emailaddress'],
     'LI_STATE' : "xabcd1234"
 };
