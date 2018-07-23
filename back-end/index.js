@@ -8,6 +8,7 @@ var config = require('./config')
 var VerifyToken = require('./VerifyToken');
 var Linkedin = require('node-linkedin')(config.LINKEDIN_CLIENT_ID, config.LINKEDIN_CLIENT_SECRET, config.LINKEDIN_CALLBACK_URL);
 var randomstring = require("randomstring");
+var resterrors = require('./resterrors')
 
 var app = express();
 app.use(express.static('public'))
@@ -125,7 +126,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
     }).then(function(results){
         return res.status(200).send(results);
     }).catch(function(error) {
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+        return res.status(501).send(resterrors(501, error))
     });
  });
 
@@ -134,7 +135,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
  * Upload a doc for owner_id
  * Upload the document metada as well as the content for the created doc in apt. table.
  */
-// TODO: Really Slow. Check how you can make it faster.
+// TODO: 
 app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
     var doc_name = req.body.doc_name;
     if (req.body.doc_type == 1) {
@@ -157,7 +158,7 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
             university:req.body.university,
             degree:req.body.degree,
             year_of_admission:req.body.year_of_admission
-        }).then(function(results){
+        }).then(function(results) {
             // Add the questions and answers to doc content table.
             // req.body.content_arr.forEach(function (valueDict) {
             //     console.log("Sop question : %s, Sop Answer : %s", valueDict.sop_question, valueDict.sop_answer);
@@ -183,15 +184,15 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
                     });
                 }).catch(function(error) {
                     console.log(error);
-                    return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}}); 
+                    return res.status(501).send(resterrors(501, error)); 
                 })
         }).catch(function(error) {
             console.log(error);
-            return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+            return res.status(501).send(resterrors(501, error));
         })
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"No such user exists. Please check owner_id parameter"}}); 
+        return res.status(501).send(resterrors(501, error)); 
     });
 })
 
@@ -214,14 +215,14 @@ app.get('/api/docs/uploadeddocs',VerifyToken, function(req,res) {
                 return res.status(200).send(docs);
             }).catch(function(error) {
                 console.log(error);
-                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+                return res.status(501).send(resterrors(501, error));    
             });
         } else {
             return res.status(200).send(results);
         }
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+        return res.status(501).send(resterrors(501, error));     
     });
 });
 
@@ -235,7 +236,7 @@ app.get('/api/docs/doccontent/:doc_id',VerifyToken ,function(req,res) {
         return res.status(200).send(results);
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});             
+        return res.status(501).send(resterrors(501, error));             
     });
 });
 
@@ -261,7 +262,7 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
         res.status(200).send({"payment_reference_id":payment_reference_id,"msg":"Transaction successfully recorded."});
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                     
+        return res.status(501).send(resterrors(501, error));                     
     });
 });
 
@@ -281,7 +282,7 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
         return res.status(200).send({"msg":"Transaction Updated Successfully"});
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+        return res.status(501).send(resterrors(501, error));
     })
  })
 
@@ -314,14 +315,14 @@ app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
                         return res.status(200).send(docs);
                     }).catch(function(error) {
                         console.log(error);
-                        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});     
+                        return res.status(501).send(resterrors(501, error));    
                     });
                 } else {
                     return res.status(200).send(docs);
                 }        
              }).catch(function(error) {
                 console.log(error);
-                return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                             
+                return res.status(501).send(resterrors(501, error));                             
              });
         } else {
             // No purchased docs just return.
@@ -329,7 +330,7 @@ app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
         }
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                     
+        return res.status(501).send(resterrors(501, error));                     
     });
 });
 
@@ -344,7 +345,7 @@ app.get('/api/search', function(req,res) {
         return res.status(200).send(results);
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+        return res.status(501).send(resterrors(501, error));
     });
 });
 
@@ -361,7 +362,7 @@ app.post('/api/updateaccount',VerifyToken,function(req,res) {
         return res.status(200).send({"rows_udpated": result});
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+        return res.status(501).send(resterrors(501, error));
     })
 });
 
@@ -375,10 +376,11 @@ app.get('/api/accountstatus',VerifyToken ,function(req,res) {
         return res.status(200).send(results[0]);
     }).catch(function(error) {
         console.log(error);
-        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+        return res.status(501).send(resterrors(501, error));
     })
 })
 
+// TODO: Sample code. Should be removed.
 app.get('/', function(request, response){
    response.sendFile('./index.html');
 });
