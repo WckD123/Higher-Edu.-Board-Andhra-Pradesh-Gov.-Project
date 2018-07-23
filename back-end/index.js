@@ -7,6 +7,7 @@ var auth = require('./auth');
 var config = require('./config')
 var VerifyToken = require('./VerifyToken');
 var Linkedin = require('node-linkedin')(config.LINKEDIN_CLIENT_ID, config.LINKEDIN_CLIENT_SECRET, config.LINKEDIN_CALLBACK_URL);
+var randomstring = require("randomstring");
 
 var app = express();
 app.use(express.static('public'))
@@ -140,15 +141,16 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
       // Admission SOP, Create the name.
       doc_name = req.body.university + "," + req.body.degree;  
     }
-    store.getUserForId({
-        user_id:req.loggedInUserId
+    store.getUser({
+        id:req.loggedInUserId,
+        email:req.loggedInUserEmail
     }).then(function(results){
         var owner = results[0];
         store.createDoc({
             owner_id:req.loggedInUserId,
             owner_name:owner['name'],
-            owner_li_link:owner['linkedin_public_profile_link'],
-            owner_pictureUrl:owner['pictureUrl'],
+            owner_li_link:owner['li_profile_link'],
+            owner_pictureUrl:owner['li_picture_url'],
             doc_type:req.body.doc_type,
             doc_name:doc_name,
             country:req.body.country,
@@ -157,9 +159,9 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
             year_of_admission:req.body.year_of_admission
         }).then(function(results){
             // Add the questions and answers to doc content table.
-            req.body.content_arr.forEach(function (valueDict) {
-                console.log("Sop question : %s, Sop Answer : %s", valueDict.sop_question, valueDict.sop_answer);
-            })
+            // req.body.content_arr.forEach(function (valueDict) {
+            //     console.log("Sop question : %s, Sop Answer : %s", valueDict.sop_question, valueDict.sop_answer);
+            // })
             const doc_id = results[0];
             var content_arr = [];
             req.body.content_arr.forEach(function (valueDict) {
@@ -175,7 +177,7 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
                 }).then(function(results){
                     return res.status(200).send({
                         "doc":{
-                            "id":results[0],
+                            "id":doc_id,
                             "doc_name":doc_name
                         }
                     });
@@ -244,7 +246,7 @@ app.get('/api/docs/doccontent/:doc_id',VerifyToken ,function(req,res) {
 app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
     var buyer_id = req.loggedInUserId;
     var doc_ids = req.body.doc_ids;
-    var payment_reference_id = req.body.payment_reference_id;
+    var payment_reference_id = randomstring.generate(10);
     var final_transaction_arr = []
     doc_ids.forEach(function(doc_id) {
         var doc_dict = {};
@@ -256,12 +258,32 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
     store.recordTransaction({
         transaction_arr:final_transaction_arr
     }).then(function(results) {
-        res.status(200).send({"msg":"Transaction successfully recorded."});
+        res.status(200).send({"payment_reference_id":payment_reference_id,"msg":"Transaction successfully recorded."});
     }).catch(function(error) {
         console.log(error);
         return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});                     
     });
 });
+
+/**
+ * Update Transaction status
+ */
+
+ app.get('/api/transactions/updatetransaction',VerifyToken, function(req,res) {
+    var payment_reference_id = req.query['payment_reference_id']
+    var status = parseInt(req.query['status'])
+    var razorpay_payment_id = req.query['razorpay_payment_id']
+    store.updateTransactionStatus({
+        payment_reference_id:payment_reference_id,
+        status:status,
+        razorpay_payment_id:razorpay_payment_id
+    }).then(function(results) {
+        return res.status(200).send({"msg":"Transaction Updated Successfully"});
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(200).send({"error":{"code":"2001", "message":"DB Error. Please check post parameters"}});
+    })
+ })
 
 /**
  * Get Purchased documents for a user_id.

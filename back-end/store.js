@@ -21,7 +21,7 @@ module.exports = {
 
     createUser({name,email,li_headline, li_profile_link, pictureUrl}) {
         console.log("create user for name %s,email %s, li_headline %s, li_profile %s", name,email,li_headline,li_profile_link);
-        return knex(constants.TABLE_NAME_USER).insert({
+        return knex('user').insert({
             'name':name,
             'email':email,
             'li_headline':li_headline,
@@ -47,8 +47,8 @@ module.exports = {
         return knex('sop_doc').insert({
             'owner_id':owner_id,
             'owner_name':owner_name,
-            'owner_li_link':owner_li_link,
-            'owner_pictureUrl':owner_pictureUrl,
+            'owner_li_profile_link':owner_li_link,
+            'owner_li_picture_url':owner_pictureUrl,
             'doc_type':doc_type,
             'doc_name':doc_name,
             'country':country,
@@ -78,6 +78,14 @@ module.exports = {
     recordTransaction({transaction_arr}) {
         console.log("Record transaction for the transaction array : %s", transaction_arr.toString());
         return knex("transactions").insert(transaction_arr);
+    },
+
+    updateTransactionStatus({payment_reference_id,status,razorpay_payment_id}) {
+        console.log("Update payment status with : %s with razorpay payment id : %s", status, razorpay_payment_id);
+        return knex('transactions').where({'payment_reference_id':payment_reference_id}).update({
+            'status':status,
+            'razorpay_payment_id':razorpay_payment_id
+        })
     },
 
     purchasedDocumentIds({user_id}) {
