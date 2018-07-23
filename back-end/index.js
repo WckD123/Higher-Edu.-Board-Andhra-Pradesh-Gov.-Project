@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var config = require('./config')
 var VerifyToken = require('./VerifyToken');
-
 var Linkedin = require('node-linkedin')(config.LINKEDIN_CLIENT_ID, config.LINKEDIN_CLIENT_SECRET, config.LINKEDIN_CALLBACK_URL);
 
 var app = express();
@@ -22,6 +21,7 @@ var corsOptions = {
     optionSuccessStatus:200
 }
 app.use(cors(corsOptions));
+
 
 /**
  * Client call for login with linkedin.
@@ -62,7 +62,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
                 }).then(function(results) {
                     if (results.length > 0) {
                         var user_id = results[0]['id'];
-                        // Update.the user with the email id including access_token.
+                        // Update.the user with the email id
                         store.updateUserForEmail({
                             email:email,
                             name:$in['formattedName'],
@@ -133,7 +133,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
  * Upload a doc for owner_id
  * Upload the document metada as well as the content for the created doc in apt. table.
  */
-// TODO: Really Slow. Check how you can make it.
+// TODO: Really Slow. Check how you can make it faster.
 app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
     var doc_name = req.body.doc_name;
     if (req.body.doc_type == 1) {
@@ -367,5 +367,5 @@ app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
     var host = server.address().host; 	
     var port = server.address().port;
-    console.log('Example app listening at http://localhost:%s',host, port);
+    console.log('Example app listening at http://localhost:%s', port);
 });

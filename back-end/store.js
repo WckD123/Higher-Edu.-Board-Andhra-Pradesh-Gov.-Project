@@ -1,6 +1,7 @@
 const env = 'development'
 const config = require('./knexfile')
 const knex = require('knex')(config[env])
+var randomstring = require("randomstring");
 module.exports = {
     // Get user based on email id which acts as an identifier for unique users.
     getUser({id, email}) {
@@ -20,12 +21,12 @@ module.exports = {
 
     createUser({name,email,li_headline, li_profile_link, pictureUrl}) {
         console.log("create user for name %s,email %s, li_headline %s, li_profile %s", name,email,li_headline,li_profile_link);
-        return knex('user').insert({
+        return knex(constants.TABLE_NAME_USER).insert({
             'name':name,
             'email':email,
             'li_headline':li_headline,
-            'linkedin_public_profile_link':li_profile_link,
-            'pictureUrl':pictureUrl
+            'li_profile_link':li_profile_link,
+            'li_picture_url':pictureUrl
         });
     },
 
@@ -35,8 +36,8 @@ module.exports = {
             'name':name,
             'email':email,
             'li_headline':li_headline,
-            'linkedin_public_profile_link':li_profile_link,
-            'pictureUrl':pictureUrl
+            'li_profile_link':li_profile_link,
+            'li_picture_url':pictureUrl
         })
     },
 

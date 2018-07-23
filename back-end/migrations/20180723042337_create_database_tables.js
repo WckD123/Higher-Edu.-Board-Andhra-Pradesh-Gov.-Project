@@ -1,11 +1,12 @@
+var randomstring = require("randomstring");
 
 exports.up = function(knex, Promise) {
   return createUserTable().then(createSopDocTable).then(addFullTextIndex).then(createDocContentTable).then(createTransactionsTable);
     function createUserTable() {
         return knex.schema.createTable('user',function(t) {
-            t.string('_id',10).notNullable().primary()
+            t.increments('id').primary()
             t.string('name')
-            t.string('email').notNullable()
+            t.string('email').notNullable().unique()
             t.string('li_headline',600)
             t.string('li_profile_link',250)
             t.string('li_picture_url',250)
@@ -17,9 +18,9 @@ exports.up = function(knex, Promise) {
     }
     function createSopDocTable() {
         return knex.schema.createTable('sop_doc',function(t) {
-            t.string('_id',10).notNullable().primary()
-            t.string('owner_id').notNullable()
-            t.foreign('owner_id').references('user._id')
+            t.increments('id').primary()
+            t.integer('owner_id').unsigned().notNullable()
+            t.foreign('owner_id').references('user.id')
             t.string('owner_name')
             t.string('owner_li_profile_link')
             t.string('owner_li_picture_url')
@@ -39,9 +40,9 @@ exports.up = function(knex, Promise) {
 
     function createDocContentTable() {
         return knex.schema.createTable('doc_content', function(t) {
-            t.string('_id',10).notNullable().primary()
-            t.string('doc_id').notNullable()
-            t.foreign('doc_id').references('sop_doc._id')
+            t.increments('id').primary()
+            t.integer('doc_id').unsigned().notNullable()
+            t.foreign('doc_id').references('sop_doc.id')
             t.text('sop_question','mediumtext').notNullable()
             t.text('sop_answer', 'longtext').notNullable()
             t.timestamps(false,true)
@@ -49,12 +50,12 @@ exports.up = function(knex, Promise) {
     }
     function createTransactionsTable() {
         return knex.schema.createTable('transactions', function(t) {
-            t.string('_id',10).notNullable().primary()
+            t.increments('id').primary()
             t.string('payment_reference_id',10).notNullable()
-            t.string('doc_id').notNullable()
-            t.foreign('doc_id').references('sop_doc._id')
-            t.string('buyer_id').notNullable()
-            t.foreign('buyer_id').references('user._id')
+            t.integer('doc_id').unsigned().notNullable()
+            t.foreign('doc_id').references('sop_doc.id')
+            t.integer('buyer_id').unsigned().notNullable()
+            t.foreign('buyer_id').references('user.id')
             t.integer('status').defaultTo(0)
             t.string('razorpay_payment_id')
         })
