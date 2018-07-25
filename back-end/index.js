@@ -402,6 +402,19 @@ app.get('/api/search', function(req,res) {
 });
 
 /**
+ * Get all documents metadata. Limit to 50.
+ */
+app.get('/api/getalldocuments', function(req,res) {
+    store.getAllDocuments()
+    .then(function(results) {
+        return res.status(200).send(results);
+    })
+    .catch(function(error) {
+        return res.status(501).send(resterrors(501, error));
+    }) 
+})
+
+/**
  * Update the acccount credentials for the logged in user.
  */
 app.post('/api/updateaccount',VerifyToken,function(req,res) {

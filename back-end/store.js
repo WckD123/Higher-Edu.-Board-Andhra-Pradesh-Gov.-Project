@@ -161,5 +161,9 @@ module.exports = {
        return knex.select(['sop_doc.id','country','university','degree','year_of_admission','owner_id','doc_type','doc_name','sop_question','sop_answer']).from('doc_content').join('sop_doc', function() {
         this.on('sop_doc.id', '=', 'doc_content.doc_id').onIn('sop_doc.id', purchased_doc_ids);
       })
+    },
+
+    getAllDocuments() {
+        return knex('sop_doc').select().limit(50);
     }
 }
