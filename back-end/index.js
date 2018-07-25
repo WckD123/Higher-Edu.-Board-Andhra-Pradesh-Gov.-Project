@@ -353,49 +353,62 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
  * Returns the document metadata of all the purchased documents and content of first document.
  * Added authentication middleware4
  */
-// TODO: Join sop_doc and transactions table to get documents metadata in one go and then get first document content.
 app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
     store.purchasedDocumentIds({
-        user_id:req.loggedInUserId
+        user_id : req.loggedInUserId
     }).then(function(results) {
-        if (results.length > 0) {
-             //Get the documents metadata for doc_ids in results.
-             var document_ids = [];
-             results.forEach(function(dict) {
-                document_ids.push(dict["doc_id"])
-             })
-             store.documentsMetadataforDocIds({
-                 doc_ids:document_ids
-             }).then(function(documents) {
-                // Get the content for first document.
-                var docs = documents;
-                if (docs.length > 0) {
-                    var firstDocId = docs[0]['id'];
-                    store.docContent({
-                        doc_id:firstDocId
-                    }).then(function(results) {
-                        docs[0]['content_arr'] = results;
-                        return res.status(200).send(docs);
-                    }).catch(function(error) {
-                        console.log(error);
-                        return res.status(501).send(resterrors(501, error));    
-                    });
+        var document_ids = [];
+        results.forEach(function(dict) {
+           document_ids.push(dict["doc_id"])
+        })
+        console.log(document_ids);
+        store.purchasedDocs({
+            purchased_doc_ids : document_ids
+        }).then(function(results) {
+            var documents_dict = {};
+            var documents_arr = [];
+            //console.log(results);
+            for (var i=0;i<results.length;i++) {
+                // If key doesn't exit then add.
+                if (!documents_dict[results[i]['id']]) {
+                    var document = {};
+                    document['id'] = results[i]['id']
+                    document['country'] = results[i]['country']
+                    document['university'] = results[i]['university']
+                    document['degree'] = results[i]['degree']
+                    document['year_of_admission'] = results[i]['year_of_admission']
+                    document['doc_type'] = results[i]['doc_type']
+                    document['doc_name'] = results[i]['doc_name']
+                    document['content_arr'] = [
+                        {
+                            "sop_question":results[i]['sop_question'],
+                            "sop_answer":results[i]['sop_answer']
+                        }
+                    ];
+                    documents_dict[results[i]['id']] = document; 
                 } else {
-                    return res.status(200).send(docs);
-                }        
-             }).catch(function(error) {
-                console.log(error);
-                return res.status(501).send(resterrors(501, error));                             
-             });
-        } else {
-            // No purchased docs just return.
-            res.status(200).send(results);
-        }
+                    // key exists just add the sop_question and answer to content_arr.
+                    var document = documents_dict[results[i]['id']];
+                    var content_arr = document['content_arr'];
+                    content_arr.push( {
+                        "sop_question":results[i]['sop_question'],
+                        "sop_answer":results[i]['sop_answer']
+                    })
+                    document['content_arr'] = content_arr;
+                    documents_dict[results[i]['id']] = document;
+                }
+            }
+            for (var key in documents_dict) {
+                documents_arr.push(documents_dict[key]);
+            } 
+            return res.status(200).send(documents_arr);
+        }).catch(function(error) {
+            console.log(error);
+        })
     }).catch(function(error) {
         console.log(error);
-        return res.status(501).send(resterrors(501, error));                     
-    });
-});
+    })
+})
 
 /**
  * Search - Searches Document Name,Country,University,Degree,Year of Admission

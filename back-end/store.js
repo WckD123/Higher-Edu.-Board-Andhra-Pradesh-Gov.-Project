@@ -90,7 +90,7 @@ module.exports = {
 
     purchasedDocumentIds({user_id}) {
         console.log("purchased documents for user_id : %s", user_id);
-        return knex("transactions").where({"buyer_id":user_id}).select('doc_id');
+        return knex("transactions").where({"buyer_id":user_id, 'status':1}).select('doc_id');
     },
 
     documentsMetadataforDocIds({doc_ids}) {
@@ -154,6 +154,12 @@ module.exports = {
 
     uploadedDocs({user_id}) {
        return knex('doc_content').join('sop_doc','sop_doc.id','=','doc_content.doc_id').where({'sop_doc.owner_id':user_id}).select(['sop_doc.id','owner_id','country','university','degree','year_of_admission','doc_type','doc_name','sop_question','sop_answer']); 
-    }
+    },
 
+    purchasedDocs({purchased_doc_ids}) {
+       // select doc_id,owner_id,country,university,degree,year_of_admission,doc_type,doc_name,sop_question,sop_answer from sop_doc inner join doc_content on doc_content.doc_id=sop_doc.id where sop_doc.id IN (1);
+       return knex.select(['sop_doc.id','country','university','degree','year_of_admission','owner_id','doc_type','doc_name','sop_question','sop_answer']).from('doc_content').join('sop_doc', function() {
+        this.on('sop_doc.id', '=', 'doc_content.doc_id').onIn('sop_doc.id', purchased_doc_ids);
+      })
+    }
 }
