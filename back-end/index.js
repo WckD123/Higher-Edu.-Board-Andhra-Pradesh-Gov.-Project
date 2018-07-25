@@ -126,6 +126,7 @@ app.get('/oauth/linkedin/callback', function(req,res) {
     }).then(function(results){
         return res.status(200).send(results);
     }).catch(function(error) {
+        console.log(error);
         return res.status(501).send(resterrors(501, error))
     });
  });
@@ -201,31 +202,6 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
  * Get API to return all the uploaded docs. First doc will have its content 
  * loaded as well.
  */
-// app.get('/api/docs/uploadeddocs',VerifyToken, function(req,res) {
-//     store.uploadedDocuments({
-//         user_id:req.loggedInUserId
-//     }).then(function(results) {
-//         var docs = results;
-//         if (docs.length > 0) {
-//             var firstDocId = docs[0]['id'];
-//             store.docContent({
-//                 doc_id:firstDocId
-//             }).then(function(results) {
-//                 docs[0]['content_arr'] = results;
-//                 return res.status(200).send(docs);
-//             }).catch(function(error) {
-//                 console.log(error);
-//                 return res.status(501).send(resterrors(501, error));    
-//             });
-//         } else {
-//             return res.status(200).send(results);
-//         }
-//     }).catch(function(error) {
-//         console.log(error);
-//         return res.status(501).send(resterrors(501, error));     
-//     });
-// });
-
 app.get('/api/docs/uploadeddocs', VerifyToken, function(req,res) {
     store.uploadedDocs({
         user_id:req.loggedInUserId
@@ -268,7 +244,7 @@ app.get('/api/docs/uploadeddocs', VerifyToken, function(req,res) {
         }
         return res.status(200).send(documents_arr);
     }).catch(function(error) {
-        console.log(error);
+        return res.status(501).send(resterrors(501, error))
     })
 });
 
@@ -404,9 +380,11 @@ app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
             return res.status(200).send(documents_arr);
         }).catch(function(error) {
             console.log(error);
+            return res.status(501).send(resterrors(501, error))
         })
     }).catch(function(error) {
         console.log(error);
+        return res.status(501).send(resterrors(501, error))
     })
 })
 
