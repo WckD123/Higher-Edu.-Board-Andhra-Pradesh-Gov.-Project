@@ -71,7 +71,7 @@ module.exports = {
 
     docContent({doc_id}) {
         console.log("Doc content for doc_id : %s", doc_id);
-        return knex('doc_content').where({"doc_id":doc_id}).select();
+        return knex('doc_content').where({"doc_id":doc_id}).select('sop_question','sop_answer');
     },
 
     // transaction_arr should contain buyer_id,doc_id,payment_reference_id

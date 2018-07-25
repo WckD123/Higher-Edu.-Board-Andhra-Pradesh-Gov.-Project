@@ -178,10 +178,8 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
                  content_arr : content_arr
                 }).then(function(results){
                     return res.status(200).send({
-                        "doc":{
-                            "id":doc_id,
-                            "doc_name":doc_name
-                        }
+                        "id":doc_id,
+                        "doc_name":doc_name
                     });
                 }).catch(function(error) {
                     console.log(error);
