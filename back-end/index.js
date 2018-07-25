@@ -201,29 +201,75 @@ app.post('/api/docs/uploaddoc/', VerifyToken,function(req,res) {
  * Get API to return all the uploaded docs. First doc will have its content 
  * loaded as well.
  */
-app.get('/api/docs/uploadeddocs',VerifyToken, function(req,res) {
-    store.uploadedDocuments({
+// app.get('/api/docs/uploadeddocs',VerifyToken, function(req,res) {
+//     store.uploadedDocuments({
+//         user_id:req.loggedInUserId
+//     }).then(function(results) {
+//         var docs = results;
+//         if (docs.length > 0) {
+//             var firstDocId = docs[0]['id'];
+//             store.docContent({
+//                 doc_id:firstDocId
+//             }).then(function(results) {
+//                 docs[0]['content_arr'] = results;
+//                 return res.status(200).send(docs);
+//             }).catch(function(error) {
+//                 console.log(error);
+//                 return res.status(501).send(resterrors(501, error));    
+//             });
+//         } else {
+//             return res.status(200).send(results);
+//         }
+//     }).catch(function(error) {
+//         console.log(error);
+//         return res.status(501).send(resterrors(501, error));     
+//     });
+// });
+
+app.get('/api/docs/uploadeddocs', VerifyToken, function(req,res) {
+    store.uploadedDocs({
         user_id:req.loggedInUserId
     }).then(function(results) {
-        var docs = results;
-        if (docs.length > 0) {
-            var firstDocId = docs[0]['id'];
-            store.docContent({
-                doc_id:firstDocId
-            }).then(function(results) {
-                docs[0]['content_arr'] = results;
-                return res.status(200).send(docs);
-            }).catch(function(error) {
-                console.log(error);
-                return res.status(501).send(resterrors(501, error));    
-            });
-        } else {
-            return res.status(200).send(results);
+        var documents_dict = {};
+        var documents_arr = [];
+        //console.log(results);
+        for (var i=0;i<results.length;i++) {
+            // If key doesn't exit then add.
+            if (!documents_dict[results[i]['id']]) {
+                var document = {};
+                document['id'] = results[i]['id']
+                document['country'] = results[i]['country']
+                document['university'] = results[i]['university']
+                document['degree'] = results[i]['degree']
+                document['year_of_admission'] = results[i]['year_of_admission']
+                document['doc_type'] = results[i]['doc_type']
+                document['doc_name'] = results[i]['doc_name']
+                document['content_arr'] = [
+                    {
+                        "sop_question":results[i]['sop_question'],
+                        "sop_answer":results[i]['sop_answer']
+                    }
+                ];
+                documents_dict[results[i]['id']] = document; 
+            } else {
+                // key exists just add the sop_question and answer to content_arr.
+                var document = documents_dict[results[i]['id']];
+                var content_arr = document['content_arr'];
+                content_arr.push( {
+                    "sop_question":results[i]['sop_question'],
+                    "sop_answer":results[i]['sop_answer']
+                })
+                document['content_arr'] = content_arr;
+                documents_dict[results[i]['id']] = document;
+            }
         }
+        for (var key in documents_dict) {
+            documents_arr.push(documents_dict[key]);
+        }
+        return res.status(200).send(documents_arr);
     }).catch(function(error) {
         console.log(error);
-        return res.status(501).send(resterrors(501, error));     
-    });
+    })
 });
 
 /**
@@ -275,26 +321,43 @@ app.post('/api/transactions/recordtransaction',VerifyToken, function(req,res) {
     var status = parseInt(req.query['status'])
     var razorpay_payment_id = req.query['razorpay_payment_id']
     store.updateTransactionStatus({
-        payment_reference_id:payment_reference_id,
-        status:status,
-        razorpay_payment_id:razorpay_payment_id
+        payment_reference_id,
+        status,
+        razorpay_payment_id
     }).then(function(results) {
-        return res.status(200).send({"msg":"Transaction Updated Successfully"});
+        store.transactionAmount({payment_reference_id})
+        .then(function(results) {
+            console.log(results);
+            // TODO: Assuming a transaction contains documents bought from a single person.
+            owner_id = results[0]['owner_id']
+            trxAmount = results[0]['SUM(price)'] 
+            store.updateTotalEarnings({owner_id, trxAmount})
+            .then(function(results) {
+                return res.status(200).send({"msg":"Transaction updated successfully"})
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(501).send(resterrors(501, error)); 
+            })
+        }).catch(function(error) {
+            console.log(error);
+            return res.status(501).send(resterrors(501, error)); 
+        })
     }).catch(function(error) {
         console.log(error);
-        return res.status(501).send(resterrors(501, error));
+        return res.status(501).send(resterrors(501, error)); 
     })
  })
 
 /**
  * Get Purchased documents for a user_id.
  * Returns the document metadata of all the purchased documents and content of first document.
- * Added authentication middleware
+ * Added authentication middleware4
  */
+// TODO: Join sop_doc and transactions table to get documents metadata in one go and then get first document content.
 app.get('/api/docs/purchaseddocs/',VerifyToken, function(req,res) {
     store.purchasedDocumentIds({
         user_id:req.loggedInUserId
-    }).then(function(results){
+    }).then(function(results) {
         if (results.length > 0) {
              //Get the documents metadata for doc_ids in results.
              var document_ids = [];

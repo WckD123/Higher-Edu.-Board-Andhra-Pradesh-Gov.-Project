@@ -116,6 +116,44 @@ module.exports = {
     getAccountStatus({user_id}) {
         console.log("Get the account staus for user_id : %s", user_id);
         return knex('user').select('account_number', 'ifsc_code').where({'id':user_id});
+    },
+
+    getTotalEarnings({user_id}) {
+        console.log("Get the total_earnings for user : %s", user_id);
+        return knex('user').select('total_earnings').where({'id':user_id});
+    },
+
+    getDocumentMetadata({doc_id}) {
+        return knex('sop_doc').select().where({'id':doc_id});
+    },
+
+    getDocIdsForPaymentReferenceId({payment_reference_id}) {
+        console.log("payment_reference_id : %s", payment_reference_id);
+        return knex('transactions').select('doc_id').where({'payment_reference_id':payment_reference_id});
+    },
+
+    getDocumentSales({doc_id}) {
+        return knex('sop_doc').select().where({'id':doc_id});
+    },
+
+    updateDocumentSales({id, sales, total_sale_value}) {
+        console.log(id,sales,total_sale_value);
+        return knex('sop_doc').update({
+            sales:sales,
+            total_sale_value:total_sale_value
+        }).where({'id':id})
+    },
+
+    transactionAmount({payment_reference_id}) {
+        return knex('transactions').join('sop_doc', 'transactions.doc_id','=','sop_doc.id').where({'payment_reference_id':payment_reference_id}).select('owner_id',knex.raw('SUM(price)')).groupBy('owner_id');
+    },
+
+    updateTotalEarnings({owner_id,trxAmount}) {
+        return knex.raw("UPDATE user SET ??=??+? where id=?",['totalEarnings','totalEarnings',trxAmount,owner_id]);
+    },
+
+    uploadedDocs({user_id}) {
+       return knex('doc_content').join('sop_doc','sop_doc.id','=','doc_content.doc_id').where({'sop_doc.owner_id':user_id}).select(['sop_doc.id','owner_id','country','university','degree','year_of_admission','doc_type','doc_name','sop_question','sop_answer']); 
     }
 
 }

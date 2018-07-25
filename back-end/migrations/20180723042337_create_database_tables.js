@@ -10,9 +10,9 @@ exports.up = function(knex, Promise) {
             t.string('li_headline',600)
             t.string('li_profile_link',250)
             t.string('li_picture_url',250)
-            t.float('total_earnings').defaultTo(0.0)
             t.string('account_number')
             t.string('ifsc_code')
+            t.float('totalEarnings').defaultTo(0.00);
             t.timestamps(false,true)
         })
     }
@@ -30,6 +30,7 @@ exports.up = function(knex, Promise) {
             t.string('university')
             t.string('degree')
             t.string('year_of_admission').notNullable()
+            t.float('price').defaultTo(249.00)
             t.timestamps(false,true)
         })
     }
@@ -58,6 +59,7 @@ exports.up = function(knex, Promise) {
             t.foreign('buyer_id').references('user.id')
             t.integer('status').defaultTo(0)
             t.string('razorpay_payment_id')
+            t.unique(['buyer_id','doc_id'])
         })
     }
 };
